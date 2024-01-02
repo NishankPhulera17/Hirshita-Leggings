@@ -1,4 +1,4 @@
-package com.hirshita;
+package com.Hirshita;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

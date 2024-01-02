@@ -194,7 +194,7 @@ const CongratulateOnScan = ({ navigation, route }) => {
   },[])
 
   useEffect(()=>{
-    getAppTheme("Bata")
+    getAppTheme("hirshita-leggings")
   },[])
 
   useEffect(()=>{
