@@ -1,4 +1,4 @@
-package com.Hirshita;
+package com.hirshita;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

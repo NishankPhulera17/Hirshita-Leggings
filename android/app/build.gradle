@@ -74,9 +74,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.Hirshita"
+    namespace "com.hirshita"
     defaultConfig {
-        applicationId "com.Hirshita"
+        applicationId "com.hirshita"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
