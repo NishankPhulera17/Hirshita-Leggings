@@ -360,7 +360,7 @@ const VerifyOtp = ({ navigation, route }) => {
 
 
             }}
-            source={require('../../../assets/images/batalogo.png')}></Image>
+            source={require('../../../assets/images/hirshita.png')}></Image>
         </View>
         <View
           style={{
