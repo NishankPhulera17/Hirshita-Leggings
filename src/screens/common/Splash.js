@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, ImageBackground,PermissionsAndroid, Plat
 import DotHorizontalList from '../../components/molecules/DotHorizontalList';
 import { useGetAppThemeDataMutation } from '../../apiServices/appTheme/AppThemeApi';
 import { useSelector, useDispatch } from 'react-redux'
-import { setPrimaryThemeColor, setSecondaryThemeColor, setIcon, setIconDrawer, setTernaryThemeColor, setOptLogin, setPasswordLogin, setButtonThemeColor, setColorShades, setKycOptions,setIsOnlineVeriification,setSocials, setWebsite, setCustomerSupportMail, setCustomerSupportMobile, setExtraFeatures } from '../../../redux/slices/appThemeSlice';
+import { setPrimaryThemeColor, setSecondaryThemeColor, setIcon, setIconDrawer, setTernaryThemeColor, setOptLogin, setPasswordLogin, setButtonThemeColor, setColorShades, setKycOptions,setIsOnlineVeriification,setSocials, setWebsite, setCustomerSupportMail, setCustomerSupportMobile, setExtraFeatures,setQrType } from '../../../redux/slices/appThemeSlice';
 import { setManualApproval, setAutoApproval, setRegistrationRequired } from '../../../redux/slices/appUserSlice';
 import { setPointSharing } from '../../../redux/slices/pointSharingSlice';
 import { useIsFocused } from '@react-navigation/native';
@@ -199,9 +199,15 @@ const Splash = ({ navigation }) => {
       dispatch(setCustomerSupportMail(getAppThemeData.body.customer_support_email))
       dispatch(setCustomerSupportMobile(getAppThemeData.body.customer_support_mobile))
       dispatch(setExtraFeatures(getAppThemeData.body.addon_features))
-      if(getAppThemeData.body.addon_features.kyc_online_verification!==undefined)
+      setQrType()
+      if(getAppThemeData?.body?.qr_type==="1")
       {
-        if(getAppThemeData.body.addon_features.kyc_online_verification)
+        dispatch(setQrType("parent_child"))
+      }
+      
+      if(getAppThemeData?.body?.addon_features?.kyc_online_verification!==undefined)
+      {
+        if(getAppThemeData?.body?.addon_features?.kyc_online_verification)
         {
           dispatch(setIsOnlineVeriification())
         }

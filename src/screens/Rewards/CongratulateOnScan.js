@@ -214,7 +214,7 @@ const CongratulateOnScan = ({ navigation, route }) => {
         if(getActiveMembershipData.success)
         {
           
-          console.log("getActiveMembershipData.body.points",getActiveMembershipData.body.points)
+           console.log("getActiveMembershipData.body.points",getActiveMembershipData?.body?.points)
         }
     }
     else if (getActiveMembershipError) {
@@ -307,7 +307,7 @@ const getMembership = async () => {
             const point =
               productData["mrp"] *
               (pointSharingData["percentage_points_value"] / 100);
-              const memberShipBonus = (points * Number(getActiveMembershipData?.body.points !==undefined ? getActiveMembershipData?.body.points : 0))/100
+              const memberShipBonus = (points * Number(getActiveMembershipData?.body?.points !==undefined ? getActiveMembershipData?.body?.points : 0))/100
           
           const totalPoints = point + memberShipBonus
             const points =
@@ -571,7 +571,7 @@ const getMembership = async () => {
         if (pointSharingData.flat_points) {
           const points = productData[`${userData.user_type}_points`]
           
-          const memberShipBonus = (points * Number(getActiveMembershipData?.body.points !==undefined ? getActiveMembershipData?.body.points : 0))/100
+          const memberShipBonus = (points * Number(getActiveMembershipData?.body?.points !==undefined ? getActiveMembershipData?.body?.points : 0))/100
           
           const totalPoints = points + memberShipBonus
           setShowPoints(totalPoints);
@@ -618,7 +618,7 @@ const getMembership = async () => {
             const points =
               productData["mrp"] *
               (pointSharingData["percentage_points_value"] / 100);
-              const memberShipBonus = (points * Number(getActiveMembershipData?.body.points !==undefined ? getActiveMembershipData?.body.points : 0))/100
+              const memberShipBonus = (points * Number(getActiveMembershipData?.body?.points !==undefined ? getActiveMembershipData?.body?.points : 0))/100
           
           const totalPoints = points + memberShipBonus
           setShowPoints(totalPoints);

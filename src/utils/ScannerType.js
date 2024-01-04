@@ -1,1 +1,1 @@
-export const scannerType = "Bar"
+export const scannerType = "QR"

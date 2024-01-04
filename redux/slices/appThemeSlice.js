@@ -16,7 +16,8 @@ const initialState = {
   website:'',
   customerSupportMobile:'',
   customerSupportMail:'',
-  extraFeatures:{}
+  extraFeatures:{},
+  qrType:''
 
 }
 
@@ -72,12 +73,15 @@ export const appThemeSlice = createSlice({
   },
   setExtraFeatures:(state,action)=>{
     state.extraFeatures = action.payload
+  },
+  setQrType:(state,action)=>{
+    state.qrType = action.payload
   }
   
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions,setIsOnlineVeriification, setSocials, setWebsite, setCustomerSupportMail, setCustomerSupportMobile,setExtraFeatures} = appThemeSlice.actions
+export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions,setIsOnlineVeriification, setSocials, setWebsite, setCustomerSupportMail, setCustomerSupportMobile,setExtraFeatures,setQrType} = appThemeSlice.actions
 
 export default appThemeSlice.reducer

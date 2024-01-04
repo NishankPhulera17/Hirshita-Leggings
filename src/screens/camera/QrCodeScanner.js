@@ -39,6 +39,7 @@ import RNQRGenerator from 'rn-qr-generator';
 import { useCashPerPointMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import { useVerifyBarMutation } from '../../apiServices/barCodeApi/VerifyBarCodeApi';
 import { scannerType } from '../../utils/ScannerType';
+import { useParentChildQrCodeScanMutation } from '../../apiServices/qrScan/ParentChildApi';
 
 const QrCodeScanner = ({ navigation }) => {
   const [zoom, setZoom] = useState(0);
@@ -56,9 +57,9 @@ const QrCodeScanner = ({ navigation }) => {
   const [helpModal, setHelpModal] = useState(false);
   const [isFirstScan, setIsFirstScan] = useState(false)
   const [isReportable, setIsReportable] = useState(false)
-
+  const [verifiedQrArray, setVerifiedQrArray] = useState([])
   const cameraRef = useRef(null);
-
+  const qrType = useSelector(state=>state.apptheme.qrType)
   const userId = useSelector(state => state.appusersdata.userId);
   const userData = useSelector(state => state.appusersdata.userData)
   const userType = useSelector(state => state.appusersdata.userType);
@@ -73,7 +74,7 @@ const QrCodeScanner = ({ navigation }) => {
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
   const dispatch = useDispatch();
-  console.log('Workflow Program is ', workflowProgram, shouldSharePoints, location, userData);
+  console.log('Workflow Program is ', workflowProgram, shouldSharePoints, location, userData,qrType);
   // console.log("Selector state",useSelector((state)=>state.appusersdata.userId))
 
   // mutations ----------------------------------------
@@ -86,6 +87,16 @@ const QrCodeScanner = ({ navigation }) => {
       isError: verifyQrIsError,
     },
   ] = useVerifyQrMutation();
+
+  const [
+    parentChildQrScanFunc,
+  {
+    data:parentChildQrScanData,
+    error:parentChildQrScanError,
+    isLoading:parentChildQrScanIsLoading,
+    isError:parentChildQrScanIsError
+  }
+] = useParentChildQrCodeScanMutation()
 
   const [verifyBarScannerFunc,
     {
@@ -368,7 +379,7 @@ const QrCodeScanner = ({ navigation }) => {
     setSuccess(false)
     setIsReportable(false)
   };
-
+//function call on successful bar code scan ------------------------------
   const onSuccessBar = e => {
     console.log('Qr data is ------------------>', e);
 
@@ -429,32 +440,82 @@ const QrCodeScanner = ({ navigation }) => {
       setMessage("Please scan a valid QR")
     }
     else {
+      const tempVerifiedArray = [...verifiedQrArray]
       const qrData = e.data.split('=')[1];
       console.log("qrData", qrData);
-
-      const requestData = { unique_code: qrData };
-      const verifyQR = async data => {
-        // console.log('qrData', data);
-        try {
-          // Retrieve the credentials
-
-          const credentials = await Keychain.getGenericPassword();
-          if (credentials) {
-            console.log(
-              'Credentials successfully loaded for user ' + credentials.username, data
-            );
-            setSavedToken(credentials.username);
-            const token = credentials.username;
-
-            data && verifyQrFunc({ token, data });
-          } else {
-            console.log('No credentials stored');
-          }
-        } catch (error) {
-          console.log("Keychain couldn't be accessed!", error);
+      if(tempVerifiedArray.includes(qrData) )
+      {
+        console.log("tempVerifiedArray",tempVerifiedArray,addedQrList)
+        setError(true)
+        setMessage("Qr Already Added")
+      }
+      else{
+        if(qrType==="")
+        {
+          console.log("tempVerifiedArray",tempVerifiedArray,addedQrList)
+  
+          const requestData = { unique_code: qrData };
+  
+          const verifyQR = async data => {
+            // console.log('qrData', data);
+            try {
+              // Retrieve the credentials
+    
+              const credentials = await Keychain.getGenericPassword();
+              if (credentials) {
+                console.log(
+                  'Credentials successfully loaded for user ' + credentials.username, data
+                );
+                setSavedToken(credentials.username);
+                const token = credentials.username;
+    
+                data && verifyQrFunc({ token, data });
+                setVerifiedQrArray([...tempVerifiedArray,qrData])
+              } else {
+                console.log('No credentials stored');
+              }
+            } catch (error) {
+              console.log("Keychain couldn't be accessed!", error);
+            }
+          };
+          verifyQR(requestData);
         }
-      };
-      verifyQR(requestData);
+        else if(qrType==="parent_child")
+        {
+          console.log("tempVerifiedArrayParent_child",tempVerifiedArray,addedQrList)
+  
+    const requestData = { unique_code: qrData,"platform_id" : 1 ,
+    "scanned_by_name":"tushar" };
+  
+          const verifyQR = async data => {
+            // console.log('qrData', data);
+            try {
+              // Retrieve the credentials
+    
+              const credentials = await Keychain.getGenericPassword();
+              if (credentials) {
+                console.log(
+                  'Credentials successfully loaded for user ' + credentials.username, data
+                );
+                setSavedToken(credentials.username);
+                const token = credentials.username;
+    
+                data && parentChildQrScanFunc({ token, data });
+                console.log("parentChildQrScanFunc",token,data)
+                setVerifiedQrArray([...tempVerifiedArray,qrData])
+  
+              } else {
+                console.log('No credentials stored');
+              }
+            } catch (error) {
+              console.log("Keychain couldn't be accessed!", error);
+            }
+          };
+          verifyQR(requestData);
+          }
+      }
+      
+      
     }
 
   };
@@ -462,10 +523,11 @@ const QrCodeScanner = ({ navigation }) => {
   // add qr to the list of qr--------------------------------------
 
   const addQrDataToList = data => {
-    const qrId = data.id;
+    console.log("addQrDataToList",data)
+    const qrId = data[0].id;
     setQr_id(qrId);
     const token = savedToken;
-    const productCode = data.product_code;
+    const productCode = data[0].product_code;
 
 
    workflowProgram.includes("Genunity") && checkGenuinityFunc({ qrId, token });
@@ -474,13 +536,13 @@ const QrCodeScanner = ({ navigation }) => {
     console.log("ProductDataFunc", { productCode, userType, token })
 
     if (addedQrList.length === 0) {
-      setAddedQrList([...addedQrList, data]);
+      setAddedQrList([...addedQrList, data[0]]);
     } else {
       const existingObject = addedQrList.find(
-        obj => obj.unique_code === data.unique_code,
+        obj => obj.unique_code === data[0].unique_code,
       );
       if (!existingObject) {
-        setAddedQrList([...addedQrList, data]);
+        setAddedQrList([...addedQrList, data[0]]);
       } else {
 
         setError(true);
@@ -560,6 +622,40 @@ const QrCodeScanner = ({ navigation }) => {
 
   // getting verify qr data --------------------------
   useEffect(() => {
+    if (parentChildQrScanData) {
+      console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
+      if (parentChildQrScanData.body?.qr[0]?.qr_status === "1") {
+        addQrDataToList(parentChildQrScanData.body.qr);
+      }
+      if (parentChildQrScanData.body?.qr?.qr_status === "2" && parentChildQrScanData.status === 201) {
+
+        setError(true);
+        setMessage(parentChildQrScanData.message);
+      }
+      if (parentChildQrScanData.body?.qr?.qr_status === "2" && parentChildQrScanData.status === 202) {
+        setIsReportable(true)
+        setError(true);
+        setMessage(parentChildQrScanData.message);
+      }
+    }
+    else if (parentChildQrScanError) {
+      console.log("parentChildQrScanError",parentChildQrScanError)
+      if (parentChildQrScanError === undefined) {
+
+        setError(true)
+        setMessage("This QR is not activated yet")
+      }
+      else {
+        setError(true)
+        setMessage(parentChildQrScanError.data?.message);
+
+      }
+      console.log('Verify qr error parent child', parentChildQrScanError.data.Error);
+
+    }
+  }, [parentChildQrScanData, parentChildQrScanError]);
+
+  useEffect(() => {
     if (verifyQrData) {
       console.log('Verify qr data', verifyQrData);
       if (verifyQrData.body?.qr?.qr_status === "1") {
@@ -591,8 +687,6 @@ const QrCodeScanner = ({ navigation }) => {
 
     }
   }, [verifyQrData, verifyQrError]);
-
-
 
 
 
