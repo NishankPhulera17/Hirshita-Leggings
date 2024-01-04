@@ -443,13 +443,7 @@ const QrCodeScanner = ({ navigation }) => {
       const tempVerifiedArray = [...verifiedQrArray]
       const qrData = e.data.split('=')[1];
       console.log("qrData", qrData);
-      if(tempVerifiedArray.includes(qrData) )
-      {
-        console.log("tempVerifiedArray",tempVerifiedArray,addedQrList)
-        setError(true)
-        setMessage("Qr Already Added")
-      }
-      else{
+     
         if(qrType==="")
         {
           console.log("tempVerifiedArray",tempVerifiedArray,addedQrList)
@@ -488,7 +482,7 @@ const QrCodeScanner = ({ navigation }) => {
     "scanned_by_name":"tushar" };
   
           const verifyQR = async data => {
-            // console.log('qrData', data);
+            console.log('verifyQR', data); 
             try {
               // Retrieve the credentials
     
@@ -513,7 +507,7 @@ const QrCodeScanner = ({ navigation }) => {
           };
           verifyQR(requestData);
           }
-      }
+      
       
       
     }
@@ -624,18 +618,16 @@ const QrCodeScanner = ({ navigation }) => {
   useEffect(() => {
     if (parentChildQrScanData) {
       console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
-      if (parentChildQrScanData.body?.qr[0]?.qr_status === "1") {
-        addQrDataToList(parentChildQrScanData.body.qr);
-      }
-      if (parentChildQrScanData.body?.qr?.qr_status === "2" && parentChildQrScanData.status === 201) {
-
-        setError(true);
-        setMessage(parentChildQrScanData.message);
-      }
-      if (parentChildQrScanData.body?.qr?.qr_status === "2" && parentChildQrScanData.status === 202) {
-        setIsReportable(true)
-        setError(true);
-        setMessage(parentChildQrScanData.message);
+      if(parentChildQrScanData?.success)
+      {
+        setAddedQrList()
+        const qrIdList=[]
+        const qrList = parentChildQrScanData?.body?.qr
+        for(var i =0;i<qrList;i++)
+        {
+          qrIdList.push(qrList[i].id)
+        }
+        dispatch(setQrIdList(qrIdList))
       }
     }
     else if (parentChildQrScanError) {

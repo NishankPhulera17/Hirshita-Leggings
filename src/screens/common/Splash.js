@@ -193,7 +193,7 @@ const Splash = ({ navigation }) => {
       dispatch(setRegistrationRequired(getAppThemeData.body.registration_options.Registration.users))
       dispatch(setColorShades(getAppThemeData.body.theme.color_shades))
       dispatch(setKycOptions(getAppThemeData.body.kyc_options))
-      dispatch(setPointSharing(getAppThemeData.body.points_sharing))
+      dispatch(setPointSharing(getAppThemeData?.body?.points_sharing))
       dispatch(setSocials(getAppThemeData.body.socials))
       dispatch(setWebsite(getAppThemeData.body.website))
       dispatch(setCustomerSupportMail(getAppThemeData.body.customer_support_email))
