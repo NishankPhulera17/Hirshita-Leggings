@@ -525,8 +525,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
 
           </View>}
         </View>
-      </ScrollView>
-       {
+        {
         getActiveMembershipIsLoading && getFormIsLoading && getWorkflowIsLoading && getBannerIsLoading && getDashboardIsLoading && fetchAllQrScanedListIsLoading && getKycStatusIsLoading && userPointIsLoading && <FastImage
           style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
           source={{
@@ -536,6 +535,8 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           resizeMode={FastImage.resizeMode.contain}
         />
       }
+      </ScrollView>
+      
     </View>
   );
 }

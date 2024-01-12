@@ -620,13 +620,15 @@ const QrCodeScanner = ({ navigation }) => {
       console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
       if(parentChildQrScanData?.success)
       {
-        setAddedQrList()
+        setAddedQrList( parentChildQrScanData?.body?.qr)
+        
         const qrIdList=[]
         const qrList = parentChildQrScanData?.body?.qr
-        for(var i =0;i<qrList;i++)
+        for(var i =0;i<qrList.length;i++)
         {
           qrIdList.push(qrList[i].id)
         }
+        console.log("qridlist",qrIdList)
         dispatch(setQrIdList(qrIdList))
       }
     }
@@ -907,7 +909,7 @@ const QrCodeScanner = ({ navigation }) => {
 
 
   const handleAddQr = () => {
-
+    handleWorkflowNavigation()
     const token = savedToken;
     if (addedQrList.length > 1) {
 
@@ -1144,7 +1146,7 @@ const QrCodeScanner = ({ navigation }) => {
                   openModal={success}></MessageModal>
               )
             }
-            {addedQrList.length === 0 ? (
+            {addedQrList?.length === 0 ? (
               <View
                 style={{
                   height: '100%',
@@ -1194,14 +1196,13 @@ const QrCodeScanner = ({ navigation }) => {
                 />
               </View>
             )}
-            {
-              productDataData && productDataData.body.products.length !== 0 &&
+           
               <ButtonProceed
                 handleOperation={handleAddQr}
                 style={{ color: 'white' }}
                 content="Proceed"
                 navigateTo={'QrCodeScanner'}></ButtonProceed>
-            }
+            
 
 
             {helpModal && <ModalWithBorder
@@ -1387,7 +1388,7 @@ const QrCodeScanner = ({ navigation }) => {
                   openModal={success}></MessageModal>
               )
             }
-            {addedQrList.length === 0 ? (
+            {addedQrList?.length === 0 ? (
               <View
                 style={{
                   height: '100%',

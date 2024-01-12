@@ -219,6 +219,7 @@ const OtpLogin = ({ navigation, route }) => {
           // setMobile('')
         }
         else {
+          console.log("sendOtpFunc",{ mobile, name, user_type, user_type_id })
           sendOtpFunc({ mobile, name, user_type, user_type_id })
           // navigation.navigate('VerifyOtp',{navigationParams})
         }

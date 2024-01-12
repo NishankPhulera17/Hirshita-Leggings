@@ -77,18 +77,24 @@ import AddedUserScanList from '../screens/addUser/AddedUserScanList';
 import RequestAppointment from '../screens/requestAppointment/RequestAppointment';
 import SupportQueries from '../screens/helpAndSupport/SupportQueries';
 import QueryList from '../screens/queryList/QueryList';
+import BrandColaboration from '../screens/common/BrandColaboration';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                
+            <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="BrandColaboration" component={BrandColaboration}></Stack.Screen>
             <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
+                
                 <Stack.Screen options={
                     {
                         headerShown: false

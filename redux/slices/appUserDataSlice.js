@@ -5,7 +5,8 @@ const initialState = {
   userType:'',
   name:'',
   userData:{},
-  id:''
+  id:'',
+  allUserData:[]
   
 }
 
@@ -29,10 +30,14 @@ export const appUserDataSlice = createSlice({
     setId: (state, action) => {
       state.id = action.payload
     },
+    setAllUsersData: (state, action) => {
+      console.log("actionpayload",action.payload)
+      state.allUserData=action.payload
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setAppUserId, setAppUserType,setAppUserName,setUserData,setId} = appUserDataSlice.actions
+export const { setAppUserId, setAppUserType,setAppUserName,setUserData,setId,setAllUsersData} = appUserDataSlice.actions
 
 export default appUserDataSlice.reducer

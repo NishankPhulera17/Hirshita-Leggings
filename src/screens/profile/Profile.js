@@ -282,7 +282,7 @@ const Profile = ({ navigation }) => {
             paddingBottom: 40,
 
           }}>
-          {showProfilePic && (
+         
             <TouchableOpacity
               style={{
                 height: 110,
@@ -296,10 +296,10 @@ const Profile = ({ navigation }) => {
               }}
                 onPress={()=>{setModalBorder(true)}}
               >
-              {fetchProfileData?.body?.profile_pic ? (
+              {fetchProfileData?.body?.profile_pic!==null ? (
                 <Image
                   style={{ height: 98, width: 98, resizeMode: 'contain', borderRadius: 49 }}
-                  source={{ uri: BaseUrlImages + fetchProfileData.body?.profile_pic }}></Image>
+                  source={{ uri: BaseUrlImages + fetchProfileData?.body?.profile_pic }}></Image>
               ) : (
                 <Image
                   style={{ height: 60, width: 60, resizeMode: 'contain' }}
@@ -308,7 +308,7 @@ const Profile = ({ navigation }) => {
          
 
             </TouchableOpacity>
-          )}
+          
           <View
             style={{
               alignItems: 'flex-start',

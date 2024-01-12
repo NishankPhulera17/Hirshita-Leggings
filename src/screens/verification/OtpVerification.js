@@ -19,9 +19,6 @@ import * as Keychain from 'react-native-keychain';
 import { useRedeemGiftsMutation } from "../../apiServices/gifts/RedeemGifts";
 import { useRedeemCashbackMutation } from "../../apiServices/cashback/CashbackRedeemApi";
 import { useGetLoginOtpForVerificationMutation } from "../../apiServices/otp/GetOtpApi";
-import { useAddCashToBankMutation } from "../../apiServices/cashback/CashbackRedeemApi";
-import Geolocation from '@react-native-community/geolocation';
-
 
 const OtpVerification = ({navigation,route}) => {
   const [message, setMessage] = useState();
@@ -31,12 +28,11 @@ const OtpVerification = ({navigation,route}) => {
   const [mobile, setMobile] = useState();
   const [timer, setTimer] = useState(60)
   const [showRedeemButton,setShowRedeemButton] = useState(false)
-  const [location,setLocation] = useState()
   const timeOutCallback = useCallback(() => setTimer(currTimer => currTimer - 1), []);
 
   const pointsConversion = useSelector(state=>state.redemptionData.pointConversion)
   const cashConversion = useSelector(state=>state.redemptionData.cashConversion)
-console.log("Point conversion and cash conversion data",pointsConversion,cashConversion)
+// console.log("Point conversion and cash conversion data",pointsConversion,cashConversion)
   const [
     verifyOtpForNormalUseFunc,
     {
@@ -63,13 +59,6 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
     },
   ] = useRedeemCashbackMutation();
 
-  const [addCashToBankFunc,{
-    data:addCashToBankData,
-    error:addCashToBankError,
-    isError:addCashToBankIsError,
-    isLoading:addCashToBankIsLoading
-  }] = useAddCashToBankMutation()
-
   const [
     getOtpforVerificationFunc,
     {
@@ -81,149 +70,37 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
   ] = useGetLoginOtpForVerificationMutation();
   
   const type = route.params.type
-  const selectedAccount = route.params?.selectedAccount
-  const handleCashbackRedemption=async()=>{
-    const credentials = await Keychain.getGenericPassword();
-    if (credentials) {
-      console.log(
-        'Credentials successfully loaded for user ' + credentials.username
-      );
-      const token = credentials.username
-      const params = {
-        token: token,
-        body: {
-          platform_id: 1,
-          platform: "mobile",
-          cash: cashConversion,
-          remarks: "demo",
-          state: location.state===undefined ? "N/A" : location.state,
-          district: location.district===undefined ? "N/A" : location.district,
-          city: location.city===undefined ? "N/A" : location.city,
-          lat: location.lat,
-          log: location.lon,
-          active_beneficiary_account_id: selectedAccount
-        },
-      }
-      console.log("addCashToBankFunc",params)
-      addCashToBankFunc(params)
-    }
-
-  }
 
   useEffect(() => {
     timer > 0 && setTimeout(timeOutCallback, 1000);
   }, [timer, timeOutCallback]);
 
-  useEffect(() => {
-    let lat = ''
-    let lon = ''
-    Geolocation.getCurrentPosition((res) => {
-      console.log("res", res)
-      lat = res.coords.latitude
-      lon = res.coords.longitude
-      // getLocation(JSON.stringify(lat),JSON.stringify(lon))
-      console.log("latlong", lat, lon)
-      var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
-        &location_type=ROOFTOP&result_type=street_address&key=AIzaSyADljP1Bl-J4lW3GKv0HsiOW3Fd1WFGVQE`
-
-      fetch(url).then(response => response.json()).then(json => {
-        console.log("location address=>", JSON.stringify(json));
-        const formattedAddress = json.results[0].formatted_address
-        const formattedAddressArray = formattedAddress.split(',')
-
-        let locationJson = {
-
-          lat: json.results[0].geometry.location.lat === undefined ? "N/A" : json.results[0].geometry.location.lat,
-          lon: json.results[0].geometry.location.lng === undefined ? "N/A" : json.results[0].geometry.location.lng,
-          address: formattedAddress === undefined ? "N/A" : formattedAddress
-
-        }
-
-        const addressComponent = json.results[0].address_components
-        console.log("addressComponent", addressComponent)
-        for (let i = 0; i <= addressComponent.length; i++) {
-          if (i === addressComponent.length) {
-            setLocation(locationJson)
-          }
-          else {
-            if (addressComponent[i].types.includes("postal_code")) {
-              console.log("inside if")
-
-              console.log(addressComponent[i].long_name)
-              locationJson["postcode"] = addressComponent[i].long_name
-            }
-            else if (addressComponent[i].types.includes("country")) {
-              console.log(addressComponent[i].long_name)
-
-              locationJson["country"] = addressComponent[i].long_name
-            }
-            else if (addressComponent[i].types.includes("administrative_area_level_1")) {
-              console.log(addressComponent[i].long_name)
-
-              locationJson["state"] = addressComponent[i].long_name
-            }
-            else if (addressComponent[i].types.includes("administrative_area_level_3")) {
-              console.log(addressComponent[i].long_name)
-
-              locationJson["district"] = addressComponent[i].long_name
-            }
-            else if (addressComponent[i].types.includes("locality")) {
-              console.log(addressComponent[i].long_name)
-
-              locationJson["city"] = addressComponent[i].long_name
-            }
-          }
-
-        }
-
-
-        console.log("formattedAddressArray", locationJson)
-
-      })
-    })
-
-  }, [])
-
-
   useEffect(()=>{
     if(redeemCashbackData)
     {
-        console.log("redeemCashbackData",redeemCashbackData)
-        if(redeemCashbackData.success)
-        {
-          handleCashbackRedemption()
-        }
-        // setSuccess(true)
-        // setMessage(redeemCashbackData.message)
-       
-        
-        
+        // console.log("redeemCashbackData",redeemCashbackData)
+        setSuccess(true)
+        setMessage(redeemCashbackData.message)
     }
     else if(redeemCashbackError){
       console.log("redeemCashbackError",redeemCashbackError)
 
+      if(redeemCashbackError.status=="409")
+      {
+        // navigation.navigate("BasicInfo",{
+        //   "userType":userData.user_type,
+        //   "userTypeId":userData.user_type_id
+        // })
+        setError(true)
+        setMessage("Kindly Complete")
+      }
+      else{
         setError(true)
         setMessage(redeemCashbackError.data.message)
-      
+      }
         
     }
   },[redeemCashbackData,redeemCashbackError])
-
-  useEffect(()=>{
-    if(addCashToBankData)
-    {
-      console.log("addCashToBankData",addCashToBankData)
-      setSuccess(true)
-      setMessage(addCashToBankData.message)
-    }
-    else if(addCashToBankError)
-    {
-      console.log("addCashToBankError",addCashToBankError)
-      setError(true)
-      setMessage("There was some problem ")
-    }
-  },[addCashToBankData,addCashToBankError])
-
   useEffect(() => {
     if (verifyOtpForNormalUseData) {
       console.log("Verify Otp", verifyOtpForNormalUseData)
@@ -244,11 +121,14 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
       console.log("redeemGiftsData", redeemGiftsData)
       setSuccess(true)
       setMessage(redeemGiftsData.message)
+      setShowRedeemButton(true)
     }
     else if (redeemGiftsError) {
-      console.log("redeemGiftsError", redeemGiftsError)
+      console.log("redeemGiftsError", JSON.stringify(redeemGiftsError))
       setMessage(redeemGiftsError.data.message)
       setError(true)
+      setShowRedeemButton(true)
+
     }
   }, [redeemGiftsError, redeemGiftsData])
 
@@ -327,6 +207,7 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
         data: data
       }
       redeemGiftsFunc(params)
+      setShowRedeemButton(false)
     
     }
     else if(type==="Cashback"){
@@ -469,7 +350,7 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
                   <Text style={{color:ternaryThemeColor,marginLeft:4}}>{timer}</Text>
               </View>
               <View style={{alignItems:'center',justifyContent:'center'}}>
-                <Text style={{color:ternaryThemeColor,marginTop:10}}>Didn't recieve any Code?</Text>
+                <Text style={{color:ternaryThemeColor,marginTop:10}}>Didn't you recieve any code?</Text>
                 
 {timer===0 &&
                 <Text onPress={()=>{handleOtpResend()}} style={{color:ternaryThemeColor,marginTop:6,fontWeight:'600',fontSize:16}}>Resend Code</Text>
@@ -480,7 +361,7 @@ console.log("Point conversion and cash conversion data",pointsConversion,cashCon
         
 
       </View>
-      {showRedeemButton && <View style={{alignItems:'center',justifyContent:'center',width:'100%',position: 'absolute',bottom:20}}>
+      {showRedeemButton && !redeemGiftsIsLoading && <View style={{alignItems:'center',justifyContent:'center',width:'100%',position: 'absolute',bottom:20}}>
         <TouchableOpacity onPress={()=>{
           finalGiftRedemption()
         }} style={{height:50,width:140,alignItems:'center',justifyContent:'center',backgroundColor:ternaryThemeColor,borderRadius:4}}>

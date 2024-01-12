@@ -257,6 +257,10 @@ const getMembership = async () => {
           };
 
           console.log("shouldSharePoints", shouldSharePoints);
+          if(pointSharingData)
+          {
+
+          
           if (pointSharingData.flat_points === true) {
             if (shouldSharePoints) {
               const points =
@@ -354,7 +358,7 @@ const getMembership = async () => {
               // alert("Points can't be shared for this tenant");
             }
           }
-
+        }
           checkUserPointFunc(params);
         } else {
           const params = {
@@ -1020,6 +1024,7 @@ const getMembership = async () => {
                   title={addCashbackEnteriesData.body.cashback}
                 ></Win>
               )}
+              
               {/* {getCouponOnCategoryError && (
                 <PoppinsText
                   content={`Coupons For This ${getCouponOnCategoryError.data.message}`}

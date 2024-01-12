@@ -9,7 +9,7 @@ import { setPointSharing } from '../../../redux/slices/pointSharingSlice';
 import { useIsFocused } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAppUserType, setAppUserName, setAppUserId, setUserData, setId} from '../../../redux/slices/appUserDataSlice';
+import { setAppUserType, setAppUserName, setAppUserId, setUserData, setId,setAllUsersData} from '../../../redux/slices/appUserDataSlice';
 import messaging from '@react-native-firebase/messaging';    
 import { setFcmToken } from '../../../redux/slices/fcmTokenSlice';
 import { setAppUsers,setAppUsersData } from '../../../redux/slices/appUserSlice';
@@ -18,12 +18,18 @@ import Geolocation from '@react-native-community/geolocation';
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch()
   const focused = useIsFocused()
-
+  const [filteredArray, setFilteredArray] = useState()
   const [isAlreadyIntroduced, setIsAlreadyIntroduced] = useState(null);
   const [gotLoginData, setGotLoginData] = useState()
-
+  const otpLogin = useSelector(state => state.apptheme.otpLogin)
+  const passwordLogin = useSelector(state => state.apptheme.passwordLogin)
+  const manualApproval = useSelector(state => state.appusers.manualApproval)
+  const autoApproval = useSelector(state => state.appusers.autoApproval)
+  const registrationRequired = useSelector(state => state.appusers.registrationRequired)
 
   const gifUri = Image.resolveAssetSource(require('../../../assets/gif/ozoStars.gif')).uri;
+  
+
   // generating functions and constants for API use cases---------------------
   const [
     getAppTheme,
@@ -92,6 +98,29 @@ const Splash = ({ navigation }) => {
   
   useEffect(() => {
     if (getUsersData) {
+      let tempFilteredArray=[]
+              
+                    for(var i=0 ;i<getUsersData?.body?.length ;i++)
+              {
+                // ban certain type of users from accessing user screen -----------------------------------
+                if((getUsersData?.body[i]?.user_type).toLowerCase()!=="distributor")
+                {
+                  tempFilteredArray.push(getUsersData?.body[i])
+                    
+                    
+                  
+             
+                  
+                }
+                
+              }
+              if(tempFilteredArray.length!==0)
+              {
+                console.log("getfilteredUserType",tempFilteredArray)
+                setFilteredArray(tempFilteredArray)
+                dispatch(setAllUsersData(tempFilteredArray))
+              }
+
       console.log("type of users",getUsersData.body);
       const appUsers = getUsersData.body.map((item,index)=>{
         return item.name
@@ -108,75 +137,6 @@ const Splash = ({ navigation }) => {
       console.log("getUsersError",getUsersError);
     }
   }, [getUsersData, getUsersError]);
-
- 
-  
- 
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('loginData');
-        console.log("loginData",JSON.parse(jsonValue))
-        const parsedJsonValue = JSON.parse(jsonValue)
-        const value = await AsyncStorage.getItem('isAlreadyIntroduced');
-      if (value !== null && jsonValue!==null ) {
-        // value previously stored
-        console.log("asynch value",value,jsonValue)
-        try{
-          console.log("Trying to dispatch",parsedJsonValue.user_type_id)
-          dispatch(setAppUserId(parsedJsonValue.user_type_id))
-          dispatch(setAppUserName(parsedJsonValue.name))
-          dispatch(setAppUserType(parsedJsonValue.user_type))
-          dispatch(setUserData(parsedJsonValue))
-          dispatch(setId(parsedJsonValue.id))
-          
-          navigation.navigate('Dashboard');
-
-         
-        }
-        catch(e)
-        {
-          console.log("Error in dispatch", e)
-        }
-
-          // console.log("isAlreadyIntroduced",isAlreadyIntroduced)
-        }
-        else 
-        {
-          if(value==="Yes")
-          {
-            navigation.navigate('SelectUser');
-
-          }
-          else{
-            navigation.navigate('Introduction')
-          }
-          // console.log("isAlreadyIntroduced",isAlreadyIntroduced,gotLoginData)
-    
-          
-           
-       
-    
-        }
-
-      }
-        
-       
-        
-        
-       catch (e) {
-        console.log("Error is reading loginData",e)
-      }
-    };
-   
-  
-  
-
-  
-  
-  // calling API to fetch themes for the app
-  
-
-  // fetching data and checking for errors from the API-----------------------
   useEffect(() => {
     if (getAppThemeData) {
       console.log("getAppThemeData", JSON.stringify(getAppThemeData.body))
@@ -212,8 +172,8 @@ const Splash = ({ navigation }) => {
           dispatch(setIsOnlineVeriification())
         }
       }
-      console.log("isAlreadyIntro", isAlreadyIntroduced)
-      getData()
+      console.log("isAlreadyIntro", isAlreadyIntroduced,filteredArray)
+      filteredArray?.length!==0 && getData()
     }
     else if(getAppThemeError){
       
@@ -222,7 +182,142 @@ const Splash = ({ navigation }) => {
       console.log("getAppThemeError", getAppThemeError)
     }
    
-  }, [getAppThemeData,getAppThemeError])
+  }, [getAppThemeData,getAppThemeError,filteredArray])
+
+  const checkRegistrationRequired=(userType,userId)=>{
+console.log("inside checkRegistrationRequired",userType,userId)
+    setTimeout(() => {
+        if(registrationRequired.includes(userType))
+    {
+        checkApprovalFlow(true,userType,userId)
+        console.log("registration required")
+    }
+    else{
+        checkApprovalFlow(false,userType,userId)
+        console.log("registration not required")
+
+    }
+    }, 400);
+    
+}
+
+const checkApprovalFlow=(registrationRequired,userType,userId)=>{
+    if(manualApproval.includes(userType))
+    {
+        handleNavigation(true,registrationRequired,userType,userId)
+    }
+    else{
+        handleNavigation(false,registrationRequired,userType,userId)
+    }
+    
+}
+
+const handleNavigation=(needsApproval,registrationRequired,userType,userId)=>{
+    console.log("Needs Approval",needsApproval,userType,userId)
+    if(otpLogin.includes(userType)
+    ){
+        navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:userType, userId:userId,registrationRequired:registrationRequired})
+    }
+    else{
+        navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:userType, userId:userId,registrationRequired:registrationRequired})
+    console.log("Password Login",userType,userId,registrationRequired,needsApproval)
+    }
+
+}
+  
+ 
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('loginData');
+        console.log("loginData",JSON.parse(jsonValue))
+        const parsedJsonValue = JSON.parse(jsonValue)
+        const value = await AsyncStorage.getItem('isAlreadyIntroduced');
+      if (value !== null && jsonValue!==null ) {
+        // value previously stored
+        console.log("asynch value",value,jsonValue)
+        try{
+          console.log("Trying to dispatch",parsedJsonValue.user_type_id)
+          dispatch(setAppUserId(parsedJsonValue.user_type_id))
+          dispatch(setAppUserName(parsedJsonValue.name))
+          dispatch(setAppUserType(parsedJsonValue.user_type))
+          dispatch(setUserData(parsedJsonValue))
+          dispatch(setId(parsedJsonValue.id))
+          
+          navigation.navigate('Dashboard');
+
+         
+        }
+        catch(e)
+        {
+          console.log("Error in dispatch", e)
+        }
+
+          // console.log("isAlreadyIntroduced",isAlreadyIntroduced)
+        }
+        else 
+        {
+        
+            if(filteredArray.length===1)
+            {
+              checkRegistrationRequired(filteredArray[0]?.user_type,filteredArray[0].user_type_id)
+            }
+            else{
+              console.log("filteredarraylength",filteredArray)
+              if(value==="Yes")
+              {
+              setTimeout(() => {
+              navigation.navigate("SelectUser")
+                
+              }, 2000);
+            }
+            else{
+        navigation.navigate('Introduction')
+            }
+            }
+          
+          
+               
+              
+           
+              
+              
+
+                  
+              // console.log("getfilteredUserType",getUsersData?.body)
+
+            
+            
+
+          
+         
+          // console.log("isAlreadyIntroduced",isAlreadyIntroduced,gotLoginData)
+    
+          
+           
+       
+    
+        }
+
+      }
+        
+       
+        
+        
+       catch (e) {
+        console.log("Error is reading loginData",e)
+      }
+    };
+   
+  
+  
+
+  
+  
+  // calling API to fetch themes for the app
+  
+
+  // fetching data and checking for errors from the API-----------------------
+  
 
 
   
@@ -230,7 +325,7 @@ const Splash = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground resizeMode='stretch' style={{ flex: 1, height: '100%', width: '100%', }} source={require('../../../assets/images/splash2.png')}>
+      <ImageBackground resizeMode='cover' style={{ flex: 1, height: '100%', width: '100%', }} source={require('../../../assets/images/brandColaboration.png')}>
 
         {/* <Image  style={{ width: 200, height: 200,  }}  source={require('../../../assets/gif/ozonegif.gif')} /> */}
         {/* <FastImage

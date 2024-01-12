@@ -3,7 +3,6 @@ import { View, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { BaseUrl } from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
-import { useGetAppUsersDataMutation } from '../../apiServices/appUsers/AppUsersApi';
 import SelectUserBox from '../../components/molecules/SelectUserBox';
 import { setAppUsers } from '../../../redux/slices/appUserSlice';
 import { slug } from '../../utils/Slug';
@@ -11,6 +10,7 @@ import { setAppUserType, setAppUserName, setAppUserId, setUserData, setId } from
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
+import ErrorModal from '../../components/modals/ErrorModal';
 
 const SelectUser = ({ navigation }) => {
   const [listUsers, setListUsers] = useState();
@@ -18,33 +18,25 @@ const SelectUser = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(false)
   const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
-
-  const [
-    getUsers,
-    {
-      data: getUsersData,
-      error: getUsersError,
-      isLoading: getUsersDataIsLoading,
-      isError: getUsersDataIsError,
-    },
-  ] = useGetAppUsersDataMutation();
+  const getUsersData = useSelector(state=>state.appusersdata.allUserData)
+  
   const dispatch = useDispatch()
 
   useEffect(() => {
     getData()
-    getUsers();
   }, []);
   useEffect(() => {
     if (getUsersData) {
-      console.log("type of users", getUsersData.body);
-      dispatch(setAppUsers(getUsersData.body))
-      setListUsers(getUsersData.body);
-    } else if (getUsersError) {
+      console.log("type of users", getUsersData);
+      dispatch(setAppUsers(getUsersData))
+      setListUsers(getUsersData);
+    } else{
       setError(true)
-      setMessage("Couldn't get type of user data")
-      console.log("getUsersError", getUsersError);
+      setMessage("Couldn't get type of user data",getUsersData)
+      console.log("getUsersData",getUsersData)
+     
     }
-  }, [getUsersData, getUsersError]);
+  }, [getUsersData]);
 
 
   const getData = async () => {
@@ -165,7 +157,7 @@ const SelectUser = ({ navigation }) => {
               );
             })}
 
-          {getUsersDataIsLoading &&
+          {/* {getUsersDataIsLoading &&
             <FastImage
               style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '60%' }}
               source={{
@@ -174,7 +166,7 @@ const SelectUser = ({ navigation }) => {
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-          }
+          } */}
 
           {error &&
 
