@@ -142,6 +142,7 @@ const Splash = ({ navigation }) => {
       console.log("getAppThemeData", JSON.stringify(getAppThemeData.body))
       dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
       dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))
+      // dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))
       dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["700"]))
       dispatch(setIcon(getAppThemeData.body.logo[0]))
       dispatch(setIconDrawer(getAppThemeData.body.logo[0]))

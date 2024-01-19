@@ -63,7 +63,7 @@ const BasicInfo = ({ navigation, route }) => {
   const [otpModal, setOtpModal] = useState(false)
   const [otpVisible, setOtpVisible] = useState(false)
   const [isValid, setIsValid] = useState(true)
-
+  const [hideButton, setHideButton] = useState(false)
   const [timer, setTimer] = useState(0)
 
   const timeOutCallback = useCallback(() => setTimer(currTimer => currTimer - 1), []);
@@ -313,6 +313,7 @@ const BasicInfo = ({ navigation, route }) => {
 
   useEffect(() => {
     if (registerUserData) {
+      setHideButton(false)
       console.log("data after submitting form", registerUserData)
       if (registerUserData.success) {
         setSuccess(true)
@@ -324,6 +325,7 @@ const BasicInfo = ({ navigation, route }) => {
       // setRegistrationForm(values)
     }
     else if (registerUserError) {
+      setHideButton(false)
       console.log("form submission error", registerUserError)
       setError(true)
       setMessage(registerUserError.data.message)
@@ -362,7 +364,11 @@ const BasicInfo = ({ navigation, route }) => {
 
   const handleTimer = () => {
 
-    if(timer===60)
+    if(userMobile)
+    {
+      if(userMobile.length==10 )
+    {
+      if(timer===60)
     {
       getOTPfunc()
       setOtpVisible(true)
@@ -373,6 +379,16 @@ const BasicInfo = ({ navigation, route }) => {
       setOtpVisible(true)
 
      
+    }
+    }
+    else {
+      setError(true)
+      setMessage("Mobile number must be 10 digits")
+    }
+    }
+    else {
+      setError(true)
+      setMessage("Kindly enter mobile number")
     }
   }
 
@@ -509,7 +525,7 @@ const BasicInfo = ({ navigation, route }) => {
     if (otpVerified) {
       const keys = Object.keys(body)
       const values = Object.values(body)
-
+      setHideButton(true)
       if (keys.includes('email')) {
         const index = keys.indexOf('email')
         if (isValidEmail(values[index])) {
@@ -914,7 +930,7 @@ const BasicInfo = ({ navigation, route }) => {
               }
             })}
 
-          {formFound && <ButtonOval
+          {formFound && !hideButton && <ButtonOval
             handleOperation={() => {
               handleRegistrationFormSubmission();
             }}

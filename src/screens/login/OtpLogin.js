@@ -36,6 +36,7 @@ const OtpLogin = ({ navigation, route }) => {
   const [message, setMessage] = useState()
   const [error, setError] = useState(false)
   const [isChecked, setIsChecked] = useState(false);
+  const [hideButton, setHideButton] = useState(false)
 
   // fetching theme for the screen-----------------------
 
@@ -119,6 +120,7 @@ const OtpLogin = ({ navigation, route }) => {
   useEffect(() => {
     if (sendOtpData) {
       console.log("data", sendOtpData)
+      setHideButton(false)
       if (sendOtpData.success === true && mobile.length === 10) {
         navigation.navigate('VerifyOtp', { navigationParams })
       }
@@ -130,6 +132,7 @@ const OtpLogin = ({ navigation, route }) => {
       console.log("err", sendOtpError)
       setError(true)
       setMessage(sendOtpError.data.message)
+      setHideButton(false)
     }
 
 
@@ -221,6 +224,7 @@ const OtpLogin = ({ navigation, route }) => {
         else {
           console.log("sendOtpFunc",{ mobile, name, user_type, user_type_id })
           sendOtpFunc({ mobile, name, user_type, user_type_id })
+          setHideButton(true)
           // navigation.navigate('VerifyOtp',{navigationParams})
         }
 
@@ -258,7 +262,7 @@ const OtpLogin = ({ navigation, route }) => {
       <View style={{
         width: '100%', alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "white",
       }}>
         <View
           style={{
@@ -266,13 +270,13 @@ const OtpLogin = ({ navigation, route }) => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: ternaryThemeColor,
+            backgroundColor: "white",
             flexDirection: 'row',
 
           }}>
 
           <TouchableOpacity
-            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
+            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 30 }}
             onPress={() => {
               navigation.goBack();
             }}>
@@ -282,24 +286,27 @@ const OtpLogin = ({ navigation, route }) => {
           </TouchableOpacity>
           <Image
             style={{
-              height: 50,
-              width: 100,
-              resizeMode: 'contain',
-              top: 20,
+              height: 100,
+              width: 140,
+              // resizeMode: 'contain',
+             
               position: "absolute",
               left: 50,
 
 
 
             }}
-            source={require('../../../assets/images/hirshita.png')}></Image>
+            source={require('../../../assets/images/hirshitaSquirrel.png')}></Image>
         </View>
         <View
           style={{
             alignItems: 'flex-start',
             justifyContent: 'center',
             marginTop: 10,
-            width: '90%'
+            width: '100%',
+            padding:20,
+            backgroundColor:ternaryThemeColor
+            
           }}>
           <PoppinsText
             style={{ color: 'white', fontSize: 28 }}
@@ -377,7 +384,7 @@ const OtpLogin = ({ navigation, route }) => {
             navigateTo="VerifyOtp"
             navigationParams={navigationParams}
             mobileLength={mobile}
-            isChecked={isChecked && mobile?.length == 10 && name != ""}
+            isChecked={isChecked && mobile?.length == 10 && name != "" && !hideButton}
           ></ButtonNavigateArrow>}
 
           

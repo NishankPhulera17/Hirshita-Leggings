@@ -23,8 +23,8 @@ const TextInputGST = (props) => {
         if(value?.length===15)
         {
           const data = {
-            "gstin":"29AAICP2912R1ZR",
-    "business_name":"TEst"
+            "gstin":value,
+    
         }
         verifyGstFunc(data)
           console.log(data)
@@ -72,12 +72,12 @@ const TextInputGST = (props) => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Pan Verified Succesfully</Text>
+            <Text style={styles.modalText}>GSTIN Verified Succesfully</Text>
             <ZoomImageAnimation style={{marginBottom:20}} zoom={100} duration={1000}  image={require('../../../../assets/images/greenTick.png')}></ZoomImageAnimation>
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+              onPress={() => setModalVisible(false)}>
               <Text style={styles.textStyle}>Close</Text>
             </Pressable>
           </View>
@@ -86,7 +86,7 @@ const TextInputGST = (props) => {
             <View style={{alignItems:"center",justifyContent:'center',backgroundColor:'white',position:"absolute",top:-15,left:16}}>
                 <PoppinsTextMedium style={{color:"#919191",padding:4,fontSize:18}} content = {label}></PoppinsTextMedium>
             </View>
-            <TextInput maxLength={12} onSubmitEditing={(text)=>{handleInputEnd()}} onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24,color:'black',fontSize:16}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={required ? `${placeHolder} *`: `${placeHolder}`}></TextInput>
+            <TextInput maxLength={15} onSubmitEditing={(text)=>{handleInputEnd()}} onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24,color:'black',fontSize:16}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={required ? `${placeHolder} *`: `${placeHolder}`}></TextInput>
         </View>
     );
 }

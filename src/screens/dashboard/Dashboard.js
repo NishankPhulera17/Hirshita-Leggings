@@ -514,7 +514,17 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
 
           </ScrollView>
-          {dashboardItems && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
+          {dashboardItems && !userPointIsLoading && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
+          {
+        userPointIsLoading && <FastImage
+          style={{ width: 100, height: 100, alignSelf: 'center' }}
+          source={{
+            uri: gifUri, // Update the path to your GIF
+            priority: FastImage.priority.normal,
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      }
           <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
@@ -525,16 +535,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
 
           </View>}
         </View>
-        {
-        getActiveMembershipIsLoading && getFormIsLoading && getWorkflowIsLoading && getBannerIsLoading && getDashboardIsLoading && fetchAllQrScanedListIsLoading && getKycStatusIsLoading && userPointIsLoading && <FastImage
-          style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
-          source={{
-            uri: gifUri, // Update the path to your GIF
-            priority: FastImage.priority.normal,
-          }}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-      }
+       
       </ScrollView>
       
     </View>

@@ -326,7 +326,7 @@ const VerifyOtp = ({ navigation, route }) => {
       <View style={{
         width: '100%', alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: ternaryThemeColor,
+        backgroundColor: "white",
       }}>
         <View
           style={{
@@ -334,13 +334,13 @@ const VerifyOtp = ({ navigation, route }) => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: ternaryThemeColor,
+            backgroundColor: "white",
             flexDirection: 'row',
 
           }}>
 
           <TouchableOpacity
-            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
+            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 30 }}
             onPress={() => {
               navigation.goBack();
             }}>
@@ -350,17 +350,17 @@ const VerifyOtp = ({ navigation, route }) => {
           </TouchableOpacity>
           <Image
             style={{
-              height: 50,
-              width: 100,
-              resizeMode: 'contain',
-              top: 20,
+              height: 100,
+              width: 140,
+              // resizeMode: 'contain',
+             
               position: "absolute",
               left: 50,
               
 
 
             }}
-            source={require('../../../assets/images/hirshita.png')}></Image>
+            source={require('../../../assets/images/hirshitaSquirrel.png')}></Image>
         </View>
         <View
           style={{
@@ -370,7 +370,7 @@ const VerifyOtp = ({ navigation, route }) => {
             width: '90%'
           }}>
           <PoppinsText
-            style={{ color: 'white', fontSize: 28 }}
+            style={{ color: 'black', fontSize: 28 }}
             content="Enter the OTP sent to"></PoppinsText>
           <PoppinsText
             style={{ color: 'white', fontSize: 28 }}

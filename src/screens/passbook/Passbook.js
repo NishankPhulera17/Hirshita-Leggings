@@ -343,7 +343,7 @@ const Passbook = ({ navigation }) => {
 
                         {/* {
                 warrantyOptionEnabled &&  */}
-                        <NavigateTO title="Warranty History" discription=" list of warranty claimed by you" image={require('../../../assets/images/warranty_icon.png')}></NavigateTO>
+                        {/* <NavigateTO title="Warranty History" discription=" list of warranty claimed by you" image={require('../../../assets/images/warranty_icon.png')}></NavigateTO> */}
                         {/* } */}
                         {
                             couponOptionEnabled &&
@@ -410,7 +410,7 @@ const Passbook = ({ navigation }) => {
 
                             {/* {
                 warrantyOptionEnabled &&  */}
-                            <GridVIew title="Warranty History" discription=" list of warranty redeemed by you" image={require('../../../assets/images/warranty_icon.png')}></GridVIew>
+                            {/* <GridVIew title="Warranty History" discription=" list of warranty redeemed by you" image={require('../../../assets/images/warranty_icon.png')}></GridVIew> */}
                             {/* } */}
                             {
                                 couponOptionEnabled &&
