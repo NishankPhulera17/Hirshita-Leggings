@@ -9,7 +9,7 @@ const BrandColaboration = ({navigation}) => {
     },[])
     return (
         <View style={{ flex: 1 }}>
-          <ImageBackground resizeMode='stretch' style={{ flex: 1, height: '100%', width: '100%', }} source={require('../../../assets/images/btpl.png')}>
+          <ImageBackground resizeMode='contain' style={{ flex: 1, height: '100%', width: '100%', }} source={require('../../../assets/images/btpl.png')}>
     
             {/* <Image  style={{ width: 200, height: 200,  }}  source={require('../../../assets/gif/ozonegif.gif')} /> */}
             {/* <FastImage

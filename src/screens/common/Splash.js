@@ -95,6 +95,17 @@ const Splash = ({ navigation }) => {
     requestLocationPermission()
   },[])
 
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem('isAlreadyIntroduced', "Yes" );
+    //   console.log("saved")
+    } catch (e) {
+      // saving error
+      console.log("error",e)
+
+    }
+  };
+  storeData()
   
   useEffect(() => {
     if (getUsersData) {
@@ -233,9 +244,10 @@ const handleNavigation=(needsApproval,registrationRequired,userType,userId)=>{
         console.log("loginData",JSON.parse(jsonValue))
         const parsedJsonValue = JSON.parse(jsonValue)
         const value = await AsyncStorage.getItem('isAlreadyIntroduced');
+        console.log("asynch value",value,jsonValue)
+
       if (value !== null && jsonValue!==null ) {
         // value previously stored
-        console.log("asynch value",value,jsonValue)
         try{
           console.log("Trying to dispatch",parsedJsonValue.user_type_id)
           dispatch(setAppUserId(parsedJsonValue.user_type_id))
