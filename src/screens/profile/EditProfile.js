@@ -32,6 +32,7 @@ const EditProfile = ({ navigation, route }) => {
   const [error, setError] = useState(false);
   const [marginB, setMarginB] = useState(0)
   const [isValidEmail,setIsValidEmail] = useState(true)
+  const [hideButton, setHideButton] = useState(false)
   // const userData = useSelector(state=>state.appusersdata.userData)
   console.log("saved image", route.params?.savedImage)
   // console.log("route.params.savedImage",route.params.savedImage)
@@ -71,11 +72,15 @@ const EditProfile = ({ navigation, route }) => {
       console.log("updateProfileData", updateProfileData)
       setMessage("Profile Updated Successfully")
       setSuccess(true)
+      setHideButton(false)
+
     }
     else if (updateProfileError) {
       console.log("updateProfileError", updateProfileError)
       setMessage(updateProfileError.data.message)
       setError(true)
+      setHideButton(false)
+
     }
   }, [updateProfileData, updateProfileError])
 
@@ -169,6 +174,8 @@ const EditProfile = ({ navigation, route }) => {
       const params = { token: token, data: tempData }
       console.log("params from submitProfile", params)
       if(isValidEmail){
+        setHideButton(true)
+
         setTimeout(() => {
           updateProfileFunc(params)
         }, 2000);
@@ -363,13 +370,13 @@ const EditProfile = ({ navigation, route }) => {
           }
         </ScrollView>
 
-        <View style={{ height: 60, width: '100%', backgroundColor: "white", alignItems: 'center', justifyContent: "center", marginBottom: 20 }}>
+        {!hideButton && <View style={{ height: 60, width: '100%', backgroundColor: "white", alignItems: 'center', justifyContent: "center", marginBottom: 20 }}>
           <TouchableOpacity onPress={() => {
             updateProfile()
           }} style={{ height: 40, width: 200, backgroundColor: ternaryThemeColor, borderRadius: 4, alignItems: 'center', justifyContent: "center" }}>
             <PoppinsTextMedium style={{ color: 'white', fontWeight: '700', fontSize: 16 }} content="Update Profile"></PoppinsTextMedium>
           </TouchableOpacity>
-        </View>
+        </View>}
 
       </View>
 

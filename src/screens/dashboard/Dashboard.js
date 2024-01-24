@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform, TouchableOpacity,Image} from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, TouchableOpacity,Image, Linking} from 'react-native';
 import MenuItems from '../../components/atoms/MenuItems';
 import { BaseUrl } from '../../utils/BaseUrl';
 import { useGetAppDashboardDataMutation } from '../../apiServices/dashboard/AppUserDashboardApi';
@@ -35,7 +35,10 @@ import { useFetchAllQrScanedListMutation } from '../../apiServices/qrScan/AddQrA
 import FastImage from 'react-native-fast-image';
 import ScannedDetailsBox from '../../components/organisms/ScannedDetailsBox';
 import moment from 'moment';
-import AnimatedDots from '../../components/animations/AnimatedDots';
+import  Facebook  from 'react-native-vector-icons/AntDesign';
+import  Instagram  from 'react-native-vector-icons/AntDesign';
+import  Youtube  from 'react-native-vector-icons/AntDesign';
+
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState()
@@ -500,11 +503,11 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
             <View style={{ height: '100%', borderWidth: 0.4, color: "#808080", opacity: 0.3, width: 0.2 }}>
             </View>
 
-            <View style={{ backgroundColor: 'white', paddingLeft: '8%' }}>
+            {!userPointIsLoading && <View style={{ backgroundColor: 'white', paddingLeft: '8%' }}>
               <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, padding: 10, borderRadius: 5, width: 120, alignItems: 'center' }} onPress={() => { navigation.navigate("RedeemedHistory") }}>
                 <PoppinsTextLeftMedium style={{ color: 'white', fontWeight: '800' }} content="Redeem"  ></PoppinsTextLeftMedium>
 </TouchableOpacity>
-            </View>
+            </View>}
 
           </View>
           }
@@ -514,6 +517,32 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
 
           </ScrollView>
+          {/* social links */}
+          <View style={{alignItems:'center',justifyContent:'space-evenly', width:'100%',height:60,flexDirection:'row'}}>
+            <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://google.com')
+            }
+            }>
+            <Facebook name="facebook-square" size={40} color="blue"></Facebook> 
+
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://google.com')
+            }
+            }>
+          <Instagram name="instagram" size={40} color="red"></Instagram> 
+              
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://google.com')
+            }
+            }>
+          <Youtube name="youtube" size={40} color="red"></Youtube> 
+              
+              </TouchableOpacity>
+
+          </View>
+          {/* --------------------- */}
           {dashboardItems && !userPointIsLoading && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
           {
         userPointIsLoading && <FastImage
@@ -528,7 +557,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
-          {(userData.user_type).toLowerCase()!=="dealer" && (userData.user_type).toLowerCase()!=="sales" &&<View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center" }}>
+          {(userData.user_type).toLowerCase()!=="dealer" && (userData.user_type).toLowerCase()!=="sales" &&<View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center",marginBottom:30 }}>
             <DashboardSupportBox text="Rewards" backgroundColor="#D9C7B6" borderColor="#FEE8D4" image={require('../../../assets/images/reward_dashboard.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Customer Support" backgroundColor="#BCB5DC" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Feedback" backgroundColor="#D8C8C8" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>

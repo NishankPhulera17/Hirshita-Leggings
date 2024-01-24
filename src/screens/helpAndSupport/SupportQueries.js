@@ -35,7 +35,7 @@ const SupportQueries = ({ navigation }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [tokenNumer, setTokenNumber] = useState(null);
   const [shortDescText, setShortDescText] = useState("");
-
+  const [hideButton, setHideButton] = useState(false)
 
 
   const ternaryThemeColor = useSelector(
@@ -95,6 +95,7 @@ const SupportQueries = ({ navigation }) => {
   useEffect(() => {
     if (submitQueriesTypeData) {
       console.log("submitQueriesTypeData", submitQueriesTypeData)
+      setHideButton(false)
       if(submitQueriesTypeData?.success)
       {
         setSuccess(true)
@@ -103,6 +104,7 @@ const SupportQueries = ({ navigation }) => {
      
     }
     else if (submitQueriesTypeError) {
+      setHideButton(false)
       console.log("getQueriesTypeError", submitQueriesTypeError)
       if(submitQueriesTypeError.status===400)
       {
@@ -163,6 +165,7 @@ const SupportQueries = ({ navigation }) => {
 
       const params = { body, token }
       submitQueriesTypeFunc(params)
+      setHideButton(true)
     }
   }
 
@@ -250,11 +253,11 @@ const SupportQueries = ({ navigation }) => {
           <FeedbackTextArea onFeedbackChange={handleFeedbackChange} placeholder={"Long description"} />
         </View>
 
-        <TouchableOpacity style={{ width: '92%', borderRadius: 15, marginTop: 30, }} onPress={() => {
+        {!hideButton && <TouchableOpacity style={{ width: '92%', borderRadius: 15, marginTop: 30, }} onPress={() => {
           submitData()
         }}>
           <PoppinsTextMedium content={"Report Issue"} style={{ backgroundColor: ternaryThemeColor, height: 50, color: 'white', fontWeight: '800', borderRadius: 5, textAlignVertical: 'center' }}></PoppinsTextMedium>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
       </View>
     </View>

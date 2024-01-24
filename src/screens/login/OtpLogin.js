@@ -375,7 +375,7 @@ const OtpLogin = ({ navigation, route }) => {
           </View>
 
 
-          {<ButtonNavigateArrow
+          { !hideButton && <ButtonNavigateArrow
             success={success}
             handleOperation={handleButtonPress}
             backgroundColor={buttonThemeColor}

@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Dimensions } from 'rea
 import { useSelector } from "react-redux";
 import { useFetchAllPushNotificationDumpListByAppUserIdMutation } from "../../apiServices/pushNotification/fetchAllPushNotificationDumpListByAppUserId";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
+import DataNotFound from "../data not found/DataNotFound";
 
 
 const Notification = ({ route, navigation }) => {
@@ -61,8 +62,8 @@ const Notification = ({ route, navigation }) => {
     }
 
     return (
-       <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center',backgroundColor: buttonThemeColor }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10,height:'10%' }}>
+       <View style={{width:'100%',alignItems:'flex-start',justifyContent:'center',backgroundColor: buttonThemeColor,height:'100%' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10,height:'15%',justifyContent:'center',top:24}}>
                 <TouchableOpacity onPress={() => {
                     console.log("hello")
                     navigation.goBack()
@@ -80,8 +81,13 @@ const Notification = ({ route, navigation }) => {
 
                     })
                 }
+               
             </View>
+            
         </ScrollView>
+        {
+                    notifData?.body?.data?.length==0 && <DataNotFound></DataNotFound>
+                }
        </View>
 
 
