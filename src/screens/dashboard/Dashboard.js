@@ -36,8 +36,12 @@ import FastImage from 'react-native-fast-image';
 import ScannedDetailsBox from '../../components/organisms/ScannedDetailsBox';
 import moment from 'moment';
 import  Facebook  from 'react-native-vector-icons/AntDesign';
-import  Instagram  from 'react-native-vector-icons/AntDesign';
 import  Youtube  from 'react-native-vector-icons/AntDesign';
+import  Instagram  from 'react-native-vector-icons/AntDesign';
+import  Link  from 'react-native-vector-icons/AntDesign';
+
+
+
 
 
 const Dashboard = ({ navigation }) => {
@@ -48,7 +52,7 @@ const Dashboard = ({ navigation }) => {
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
   const [membership, setMembership] = useState()
   const [scanningDetails, seScanningDetails] = useState()
-
+  const [showLink, setShowLink] = useState(false)
   const focused = useIsFocused()
   const dispatch = useDispatch()
   const userId = useSelector((state) => state.appusersdata.userId)
@@ -517,33 +521,10 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
 
           </ScrollView>
-          {/* social links */}
-          <View style={{alignItems:'center',justifyContent:'space-evenly', width:'100%',height:60,flexDirection:'row'}}>
-            <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://google.com')
-            }
-            }>
-            <Facebook name="facebook-square" size={40} color="blue"></Facebook> 
-
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://google.com')
-            }
-            }>
-          <Instagram name="instagram" size={40} color="red"></Instagram> 
-              
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://google.com')
-            }
-            }>
-          <Youtube name="youtube" size={40} color="red"></Youtube> 
-              
-              </TouchableOpacity>
-
-          </View>
-          {/* --------------------- */}
+          
+           
           {dashboardItems && !userPointIsLoading && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
+        
           {
         userPointIsLoading && <FastImage
           style={{ width: 100, height: 100, alignSelf: 'center' }}
@@ -554,15 +535,65 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           resizeMode={FastImage.resizeMode.contain}
         />
       }
-          <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+          <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
+          {/* social links */}
+          <View style={{alignItems:'center',justifyContent:'flex-end',flexDirection:'row',width:'90%',marginBottom:4}}>
+          <TouchableOpacity style={{width:'15%',marginBottom:10}} onPress={()=>{setShowLink(!showLink)}}>
+            <View style={{backgroundColor:ternaryThemeColor,width:50,height:50,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+            <Link name="sharealt" color={"white"} size={30}></Link>
+            </View>
+          </TouchableOpacity>
+          {showLink && <View style={{alignItems:'center',justifyContent:'space-evenly', width:'85%',height:60,flexDirection:'row',marginBottom:10}}>
+            
+               <TouchableOpacity onPress={()=>{
+                Linking.openURL('https://www.facebook.com/HarshitaLeggings/')
+                }
+                }>
+                <Facebook name="facebook-square" size={40} color="blue"></Facebook> 
+    
+                </TouchableOpacity>
+       
+           
+            <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://www.hirshita.com/?fbclid=IwAR3_IGHfXqw-8qujD6qpcXRXtI4xsXeH-bwKnLc3WFKlkjgYsjvIuk_WvoY')
+            }
+            }>
+              <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
+          <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/hirshitaSquirrel.png')}></Image>
+              </View>
+              
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://londondream.in/')
+            }
+            }>
+              <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
+          <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/LondonDreamsIcon.png')}></Image>
+              </View>
+              
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://www.instagram.com/harshita_leggings/')
+            }
+            }>
+          <Instagram name="instagram" size={40} color="red"></Instagram> 
+              
+              </TouchableOpacity>
+
+          </View>}
+          </View>
+          
+          {/* --------------------- */}
           {(userData.user_type).toLowerCase()!=="dealer" && (userData.user_type).toLowerCase()!=="sales" &&<View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center",marginBottom:30 }}>
             <DashboardSupportBox text="Rewards" backgroundColor="#D9C7B6" borderColor="#FEE8D4" image={require('../../../assets/images/reward_dashboard.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Customer Support" backgroundColor="#BCB5DC" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Feedback" backgroundColor="#D8C8C8" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
 
           </View>}
+          
+           
         </View>
        
       </ScrollView>

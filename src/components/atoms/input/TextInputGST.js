@@ -8,7 +8,7 @@ const TextInputGST = (props) => {
     const [value,setValue] = useState()
     const [modalVisible, setModalVisible] = useState(false);
     const placeHolder = props.placeHolder
-    const required = props.required
+    const required = props.jsonData.required
   const label = props.label
     const [verifyGstFunc,{
         data:verifyGstData,

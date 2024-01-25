@@ -27,7 +27,7 @@ const Splash = ({ navigation }) => {
   const autoApproval = useSelector(state => state.appusers.autoApproval)
   const registrationRequired = useSelector(state => state.appusers.registrationRequired)
 
-  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/ozoStars.gif')).uri;
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/btplGif.gif')).uri;
   
 
   // generating functions and constants for API use cases---------------------
@@ -94,6 +94,9 @@ const Splash = ({ navigation }) => {
     };
     requestLocationPermission()
   },[])
+  useEffect(()=>{
+    getData()
+  },[focused])
 
   const storeData = async () => {
     try {
@@ -117,11 +120,6 @@ const Splash = ({ navigation }) => {
                 if((getUsersData?.body[i]?.user_type).toLowerCase()!=="distributor")
                 {
                   tempFilteredArray.push(getUsersData?.body[i])
-                    
-                    
-                  
-             
-                  
                 }
                 
               }
@@ -256,7 +254,9 @@ const handleNavigation=(needsApproval,registrationRequired,userType,userId)=>{
           dispatch(setUserData(parsedJsonValue))
           dispatch(setId(parsedJsonValue.id))
           
+          setTimeout(() => {
           navigation.navigate('Dashboard');
+          }, 2000);
 
          
         }
