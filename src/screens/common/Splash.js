@@ -94,9 +94,7 @@ const Splash = ({ navigation }) => {
     };
     requestLocationPermission()
   },[])
-  useEffect(()=>{
-    getData()
-  },[focused])
+ 
 
   const storeData = async () => {
     try {

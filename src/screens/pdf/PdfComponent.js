@@ -1,18 +1,26 @@
-import React from 'react';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import React,{useEffect} from 'react';
+import { StyleSheet, Dimensions, View,BackHandler} from 'react-native';
 import Pdf from 'react-native-pdf';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
-const PdfComponent = ({route}) => {
+const PdfComponent = ({route,navigation}) => {
     const pdf = route.params.pdf
     const pdfLink = BaseUrlImages+pdf
     const source = { uri: pdfLink, cache: true };
+    
+    useEffect(()=>{
+        return () =>BackHandler.removeEventListener()
+    },[])
     return (
         <View style={styles.container}>
                 <Pdf
+
                 trustAllCerts={false}
                     source={source}
                     onLoadComplete={(numberOfPages,filePath) => {
+                         BackHandler.addEventListener('hardwareBackPress', ()=>{
+                            navigation.goBack()
+                        })
                         console.log(`Number of pages: ${numberOfPages}`);
                     }}
                     onPageChanged={(page,numberOfPages) => {

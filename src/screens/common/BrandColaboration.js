@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import {View, StyleSheet,ImageBackground,Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useIsFocused } from '@react-navigation/native';
-
 const BrandColaboration = ({navigation}) => {
   const focused = useIsFocused()
+
     useEffect(()=>{
-        const timer =  setTimeout(() => {
+      
             navigation.navigate("Splash")
-        }, 2000);
-        return () => {
-          clearTimeout(timer);
-        };
+        
+       
       }
     ,[focused])
+
+    
   const gifUri = Image.resolveAssetSource(require('../../../assets/gif/btplGif.gif')).uri;
 
     return (

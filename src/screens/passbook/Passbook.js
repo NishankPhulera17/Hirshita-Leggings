@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity, Text,BackHandler } from 'react-native';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
@@ -75,9 +75,11 @@ const Passbook = ({ navigation }) => {
         }
 
     }
+    
     useEffect(() => {
         getOptionsAccordingToWorkflow()
         getMembership()
+        return () =>BackHandler.removeEventListener()
     }, [])
 
     useEffect(() => {

@@ -18,7 +18,7 @@ import ProfileDropDown from '../../components/atoms/dropdown/ProfileDropDown';
 import moment from 'moment';
 import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
 import DisplayOnlyTextInput from '../../components/atoms/DisplayOnlyTextInput';
-
+import FastImage from 'react-native-fast-image';
 
 const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([])
@@ -44,6 +44,8 @@ const EditProfile = ({ navigation, route }) => {
   const formFields = route.params?.formFields
   const formValues = route.params?.formValues
   const height = Dimensions.get('window').height
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+
   // const manualkyc = ["fabricator","consumer","retailer","dealer"]
   console.log("form fields and values", JSON.stringify(formFields), formValues)
   const [
@@ -327,6 +329,30 @@ const EditProfile = ({ navigation, route }) => {
                   </DisplayOnlyTextInput>
                   )
                 }
+                else if(item.name==="name")
+                {
+                  return(
+                    <DisplayOnlyTextInput
+                    key={index}
+                    data={formValues[index] === null || formValues[index] === undefined  ? 'No data available' : formValues[index]}
+                    title={item.label}
+                    photo={require('../../../assets/images/eye.png')}>
+
+                  </DisplayOnlyTextInput>
+                  )
+                }
+                else if(item.name==="gstin")
+                {
+                  return(
+                    <DisplayOnlyTextInput
+                    key={index}
+                    data={formValues[index] === null || formValues[index] === undefined  ? 'No data available' : formValues[index]}
+                    title={item.label}
+                    photo={require('../../../assets/images/eye.png')}>
+
+                  </DisplayOnlyTextInput>
+                  )
+                }
                 else if(item.name==="enrollment_date")
                 {
                   return(
@@ -349,7 +375,7 @@ const EditProfile = ({ navigation, route }) => {
                 else{
                   return (
 
-                    <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
+                    <TextInputRectangularWithPlaceholder  item ={item} placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
                   )
                 }
                 
@@ -369,6 +395,16 @@ const EditProfile = ({ navigation, route }) => {
             })
           }
         </ScrollView>
+        {
+          hideButton && <FastImage
+          style={{ width: 100, height: 100, alignSelf: 'center',marginBottom:20 }}
+          source={{
+              uri: gifUri, // Update the path to your GIF
+              priority: FastImage.priority.normal,
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+      />
+        }
 
         {!hideButton && <View style={{ height: 60, width: '100%', backgroundColor: "white", alignItems: 'center', justifyContent: "center", marginBottom: 20 }}>
           <TouchableOpacity onPress={() => {

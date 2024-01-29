@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform, TouchableOpacity,Image, Linking} from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, TouchableOpacity,Image, Linking,BackHandler,Alert} from 'react-native';
 import MenuItems from '../../components/atoms/MenuItems';
 import { BaseUrl } from '../../utils/BaseUrl';
 import { useGetAppDashboardDataMutation } from '../../apiServices/dashboard/AppUserDashboardApi';
@@ -24,7 +24,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { setPercentagePoints, setShouldSharePoints } from '../../../redux/slices/pointSharingSlice';
 import { useExtraPointEnteriesMutation } from '../../apiServices/pointSharing/pointSharingApi';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
-import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+import { useFetchUserPointsHistoryMutation, useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { setQrIdList } from '../../../redux/slices/qrCodeDataSlice';
 import CampaignVideoModal from '../../components/modals/CampaignVideoModal';
@@ -39,7 +39,7 @@ import  Facebook  from 'react-native-vector-icons/AntDesign';
 import  Youtube  from 'react-native-vector-icons/AntDesign';
 import  Instagram  from 'react-native-vector-icons/AntDesign';
 import  Link  from 'react-native-vector-icons/AntDesign';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -56,6 +56,7 @@ const Dashboard = ({ navigation }) => {
   const focused = useIsFocused()
   const dispatch = useDispatch()
   const userId = useSelector((state) => state.appusersdata.userId)
+  const idUser = useSelector(state => state.appusersdata.id);
   const userData = useSelector(state => state.appusersdata.userData);
   const pointSharingData = useSelector(state => state.pointSharing.pointSharing)
   const ternaryThemeColor = useSelector(
@@ -86,15 +87,12 @@ const Dashboard = ({ navigation }) => {
     isError: getDashboardIsError
   }] = useGetAppDashboardDataMutation()
 
-  const [
-    fetchAllQrScanedList,
-    {
-      data: fetchAllQrScanedListData,
-      isLoading: fetchAllQrScanedListIsLoading,
-      error: fetchAllQrScanedListError,
-      isError: fetchAllQrScanedListIsError,
-    },
-  ] = useFetchAllQrScanedListMutation();
+  const [fetchUserPointsHistoryFunc, {
+    data: fetchUserPointsHistoryData,
+    error: fetchUserPointsHistoryError,
+    isLoading: fetchUserPointsHistoryLoading,
+    isError: fetchUserPointsHistoryIsError
+}] = useFetchUserPointsHistoryMutation()
 
   const [getKycStatusFunc, {
     data: getKycStatusData,
@@ -150,111 +148,28 @@ const Dashboard = ({ navigation }) => {
 
   }
 
- 
-  useEffect(() => {
-    fetchPoints()
-    dispatch(setQrIdList([]))
-  }, [focused])
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+       
+       
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   useEffect(() => {
-    (async () => {
-      const credentials = await Keychain.getGenericPassword();
-      const token = credentials.username;
-      let queryParams = `?user_type_id=${userData.user_type_id}&app_user_id=${userData.id}&limit=${1}`;
-      if (startDate && endDate) {
-        queryParams += `&from_date=${moment(startDate).format(
-          "YYYY-MM-DD"
-        )}&to_date=${moment(endDate).format("YYYY-MM-DD")}`;
-      } else if (startDate) {
-        queryParams += `&from_date=${moment(startDate).format(
-          "YYYY-MM-DD"
-        )}`;
-      }
+   
+      fetchPoints()
+      dispatch(setQrIdList([]))
+      fetchPointsHistory()
 
-      console.log("queryParams", queryParams);
-
-      fetchAllQrScanedList({
-        token: token,
-
-        query_params: queryParams,
-      });
-    })();
-  }, [focused]);
-  useEffect(() => {
-    if (extraPointEntriesData) {
-      console.log("extraPointEntriesData", extraPointEntriesData)
-
-    }
-    else if (extraPointEntriesError) {
-      console.log("extraPointEntriesError", extraPointEntriesError)
-    }
-  }, [extraPointEntriesData, extraPointEntriesError])
-
-  useEffect(()=>{
-    if(fetchAllQrScanedListData)
-    {
-      // console.log("fetchAllQrScanedListData",JSON.stringify(fetchAllQrScanedListData))
-      if(fetchAllQrScanedListData.success)
-      {
-        if(fetchAllQrScanedListData.body.total!==0)
-        {
-        seScanningDetails(fetchAllQrScanedListData.body)
-
-        }
-      }
-    }
-    else if(fetchAllQrScanedListError)
-    {
-console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
-    }  },[fetchAllQrScanedListData],fetchAllQrScanedListError)
-
-  useEffect(() => {
-    if (getActiveMembershipData) {
-      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
-      if(getActiveMembershipData.success)
-      {
-        setMembership(getActiveMembershipData.body?.tier.name)
-      }
-    }
-    else if (getActiveMembershipError) {
-      console.log("getActiveMembershipError", getActiveMembershipError)
-    }
-  }, [getActiveMembershipData, getActiveMembershipError])
-
-  useEffect(() => {
-    if (getKycStatusData) {
-      console.log("getKycStatusData", getKycStatusData)
-      if (getKycStatusData.success) {
-        const tempStatus = Object.values(getKycStatusData.body)
-        
-        setShowKyc(tempStatus.includes(false))
-
-        dispatch(
-          setKycData(getKycStatusData.body)
-        )
-
-
-      }
-    }
-    else if (getKycStatusError) {
-      console.log("getKycStatusError", getKycStatusError)
-    }
-  }, [getKycStatusData, getKycStatusError])
-
-  useEffect(() => {
-    if (getDashboardData) {
-      console.log("getDashboardData", getDashboardData)
-      setDashboardItems(getDashboardData.body.app_dashboard)
-    }
-    else if (getDashboardError) {
-      console.log("getDashboardError", getDashboardError)
-    }
-  }, [getDashboardData, getDashboardError])
-
-  
-
-  useEffect(() => {
-    let lat = ''
+      let lat = ''
     let lon = ''
     Geolocation.getCurrentPosition((res) => {
       console.log("res", res)
@@ -263,7 +178,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
       // getLocation(JSON.stringify(lat),JSON.stringify(lon))
       console.log("latlong", lat, lon)
       var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
-          &location_type=ROOFTOP&result_type=street_address&key=AIzaSyADljP1Bl-J4lW3GKv0HsiOW3Fd1WFGVQE`
+          &location_type=ROOFTOP&result_type=street_address&key=AIzaSyB73p4PDmuZmvTvR93FXQVXgfStWEz9XKM`
 
       fetch(url).then(response => response.json()).then(json => {
         console.log("location address=>", JSON.stringify(json));
@@ -322,8 +237,6 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
       })
     })
 
-  }, [])
-  useEffect(() => {
     console.log("pointSharingDataDashboard",pointSharingData)
     if(pointSharingData)
     {
@@ -350,36 +263,123 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
     }
    
 
-
-  }, [])
-  useEffect(() => {
-    const getDashboardData = async () => {
-      try {
-        // Retrieve the credentials
-        const credentials = await Keychain.getGenericPassword();
-        if (credentials) {
-          console.log(
-            'Credentials successfully loaded for user ' + credentials.username
-          );
-          const token = credentials.username
-          const form_type = "2"
-          console.log("token from dashboard ", token)
-          token && getDashboardFunc(token)
-          token && getKycStatusFunc(token)
-          token && getBannerFunc(token)
-          token && getWorkflowFunc({ userId, token })
-          token && getFormFunc({ form_type, token })
-         getMembership()
-        } else {
-          console.log('No credentials stored');
+      const getDashboardData = async () => {
+        try {
+          // Retrieve the credentials
+          const credentials = await Keychain.getGenericPassword();
+          if (credentials) {
+            console.log(
+              'Credentials successfully loaded for user ' + credentials.username
+            );
+            const token = credentials.username
+            const form_type = "2"
+            console.log("token from dashboard ", token)
+            token && getDashboardFunc(token)
+            token && getKycStatusFunc(token)
+            token && getBannerFunc(token)
+            token && getWorkflowFunc({ userId, token })
+            token && getFormFunc({ form_type, token })
+           getMembership()
+          } else {
+            console.log('No credentials stored');
+          }
+        } catch (error) {
+          console.log("Keychain couldn't be accessed!", error);
         }
-      } catch (error) {
-        console.log("Keychain couldn't be accessed!", error);
+      }
+      getDashboardData()
+
+     
+   }, [focused]);
+  
+ 
+  
+  
+const fetchPointsHistory = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    console.log("userId", userId)
+    const params = {
+        userId: String(idUser),
+        token: token
+    }
+    fetchUserPointsHistoryFunc(params)
+
+}
+  useEffect(() => {
+    if (extraPointEntriesData) {
+      console.log("extraPointEntriesData", extraPointEntriesData)
+
+    }
+    else if (extraPointEntriesError) {
+      console.log("extraPointEntriesError", extraPointEntriesError)
+    }
+  }, [extraPointEntriesData, extraPointEntriesError])
+  useEffect(() => {
+        if (fetchUserPointsHistoryData) {
+            console.log("fetchUserPointsHistoryData", JSON.stringify(fetchUserPointsHistoryData))
+
+
+            if (fetchUserPointsHistoryData.success) {
+        seScanningDetails(fetchUserPointsHistoryData?.body)
+            }
+        }
+        else if (fetchUserPointsHistoryError) {
+            console.log("fetchUserPointsHistoryError", fetchUserPointsHistoryError)
+        }
+
+    }, [fetchUserPointsHistoryData, fetchUserPointsHistoryError])
+
+  
+
+  useEffect(() => {
+    if (getActiveMembershipData) {
+      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
+      if(getActiveMembershipData.success)
+      {
+        setMembership(getActiveMembershipData.body?.tier.name)
       }
     }
-    getDashboardData()
+    else if (getActiveMembershipError) {
+      console.log("getActiveMembershipError", getActiveMembershipError)
+    }
+  }, [getActiveMembershipData, getActiveMembershipError])
 
-  }, [focused])
+  useEffect(() => {
+    if (getKycStatusData) {
+      console.log("getKycStatusData", getKycStatusData)
+      if (getKycStatusData.success) {
+        const tempStatus = Object.values(getKycStatusData.body)
+        
+        setShowKyc(tempStatus.includes(false))
+
+        dispatch(
+          setKycData(getKycStatusData.body)
+        )
+
+
+      }
+    }
+    else if (getKycStatusError) {
+      console.log("getKycStatusError", getKycStatusError)
+    }
+  }, [getKycStatusData, getKycStatusError])
+
+  useEffect(() => {
+    if (getDashboardData) {
+      console.log("getDashboardData", getDashboardData)
+      setDashboardItems(getDashboardData.body.app_dashboard)
+    }
+    else if (getDashboardError) {
+      console.log("getDashboardError", getDashboardError)
+    }
+  }, [getDashboardData, getDashboardError])
+
+  
+
+  
+  
+ 
 
 
 
@@ -515,7 +515,8 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
 
           </View>
           }
-         {userData.user_type_id !== 13 && scanningDetails && scanningDetails?.data?.length &&  <ScannedDetailsBox lastScannedDate={moment(scanningDetails?.data[0]?.scanned_at).format("DD MMM YYYY")} scanCount={scanningDetails.total}></ScannedDetailsBox>}
+               {scanningDetails && scanningDetails?.data.length!==0 &&  <ScannedDetailsBox lastScannedDate={moment(scanningDetails?.data[0]?.created_at).format("DD MMM YYYY")} scanCount={scanningDetails.total}></ScannedDetailsBox>}
+
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 4 }}>
             {/* <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
@@ -540,11 +541,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           </View>
           {/* social links */}
           <View style={{alignItems:'center',justifyContent:'flex-end',flexDirection:'row',width:'90%',marginBottom:4}}>
-          <TouchableOpacity style={{width:'15%',marginBottom:10}} onPress={()=>{setShowLink(!showLink)}}>
-            <View style={{backgroundColor:ternaryThemeColor,width:50,height:50,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
-            <Link name="sharealt" color={"white"} size={30}></Link>
-            </View>
-          </TouchableOpacity>
+         
           {showLink && <View style={{alignItems:'center',justifyContent:'space-evenly', width:'85%',height:60,flexDirection:'row',marginBottom:10}}>
             
                <TouchableOpacity onPress={()=>{
@@ -583,6 +580,11 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
               </TouchableOpacity>
 
           </View>}
+          <TouchableOpacity style={{width:'15%',marginBottom:10}} onPress={()=>{setShowLink(!showLink)}}>
+            <View style={{backgroundColor:ternaryThemeColor,width:50,height:50,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+            <Link name="sharealt" color={"white"} size={30}></Link>
+            </View>
+          </TouchableOpacity>
           </View>
           
           {/* --------------------- */}
