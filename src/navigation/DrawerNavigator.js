@@ -297,7 +297,7 @@ const CustomDrawer = () => {
           }}>
           {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
           {/* <Icon size={size} name="bars" color={ternaryThemeColor}></Icon> */}
-          <Image style={{ height: 20, width: 20, resizeMode: 'contain' }} source={{ uri: image }}></Image>
+          <Image style={{ height: 30, width: 30, resizeMode: 'contain' }} source={{ uri: image }}></Image>
         </View>
 
         <View

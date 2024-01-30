@@ -18,10 +18,12 @@ import { useGetActiveMembershipMutation } from '../../apiServices/membership/App
 import { useIsFocused } from '@react-navigation/native';
 import PlatinumModal from '../../components/platinum/PlatinumModal';
 import Edit from 'react-native-vector-icons/Entypo';
+import Delete from 'react-native-vector-icons/AntDesign'
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import Close from 'react-native-vector-icons/Ionicons';
+import DeleteModal from '../../components/modals/DeleteModal';
 
 
 
@@ -34,7 +36,7 @@ const Profile = ({ navigation }) => {
   const [showProfileData, setShowProfileData] = useState(false)
   const [openModalWithBorder, setModalBorder] = useState(false)
   const [profileData, setProfileData] = useState()
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const kycData = useSelector(state => state.kycDataSlice.kycData)
 
   const ternaryThemeColor = useSelector(
@@ -143,9 +145,7 @@ const Profile = ({ navigation }) => {
     getMembership()
   }, [focused]);
 
-  useEffect(() => {
-    
-  }, []);
+ 
 
   const getMembership = async () => {
     const credentials = await Keychain.getGenericPassword();
@@ -198,6 +198,9 @@ const Profile = ({ navigation }) => {
    
   };
 
+  const hideModal=()=>{
+    setShowDeleteModal(false)
+  }
   
 
   const name = profileName ? fetchProfileData?.body.name : '';
@@ -253,6 +256,12 @@ const Profile = ({ navigation }) => {
       </View>
     )
   }
+  
+
+  const deleteID=()=>{
+    setShowDeleteModal(!showDeleteModal)
+  }
+
   const ProfileHeader = () => {
 
     const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
@@ -386,7 +395,17 @@ const Profile = ({ navigation }) => {
               }}
               style={{ height: 40, width: 40, borderRadius: 20, backgroundColor: "white", borderWidth: 1, borderColor: ternaryThemeColor, alignItems: "center", justifyContent: 'center' }}>
               <Edit name="edit" size={20} color={ternaryThemeColor}></Edit>
+              
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+               deleteID();
+              }}
+              style={{ height: 40, width: 40, borderRadius: 20, backgroundColor: "white", borderWidth: 1, borderColor: ternaryThemeColor, alignItems: "center", justifyContent: 'center',marginTop:20 }}>
+               <Delete name="delete" size={24} color={ternaryThemeColor}></Delete>
+              
+            </TouchableOpacity>
+           
           </View>
         </View>
 
@@ -446,6 +465,9 @@ const Profile = ({ navigation }) => {
       </View>
       {!showNoDataFoundMessage && <ProfileHeader></ProfileHeader>}
       {fetchProfileData && <GreyBar></GreyBar>}
+      
+        <DeleteModal hideModal = {hideModal} modalVisible={showDeleteModal}></DeleteModal>
+      
       <ScrollView>
 
         {showProfileData && <>
@@ -515,6 +537,8 @@ const Profile = ({ navigation }) => {
 
         }
       </ScrollView>
+
+        
 
       {openModalWithBorder && <ModalWithBorder
         modalClose={() => {()=> setModalBorder(false) }}
