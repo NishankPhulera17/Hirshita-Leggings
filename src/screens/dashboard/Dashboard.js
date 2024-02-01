@@ -40,6 +40,9 @@ import  Youtube  from 'react-native-vector-icons/AntDesign';
 import  Instagram  from 'react-native-vector-icons/AntDesign';
 import  Link  from 'react-native-vector-icons/AntDesign';
 import { useFocusEffect } from '@react-navigation/native';
+import FadeInOutAnimations from '../../components/animations/FadeInOutAnimations';
+import RotateViewAnimation from '../../components/animations/RotateViewAnimation';
+import ZoomViewAnimations from '../../components/animations/ZoomViewAnimations';
 
 
 
@@ -484,7 +487,7 @@ const fetchPointsHistory = async () => {
 
       </View>
         <View style={{ width: '100%', alignItems: "center", justifyContent: "center", height: "90%" }}>
-          <View style={{ height: 200, width: '100%', marginBottom: 20 }}>
+          <View style={{ height: 200, width: '100%', marginBottom: 10 }}>
             {bannerArray &&
               <Banner images={bannerArray}></Banner>
             }
@@ -494,9 +497,8 @@ const fetchPointsHistory = async () => {
             }} /> */}
           </View>
          {/* Ozone specific change do not show for sales */}
-         {
-            userData.user_type_id !== 13 && 
-            <View style={{ width: "90%", height: 50, backgroundColor: 'white', marginBottom: 20, flexDirection: 'row', alignItems: 'center', borderColor: '#808080', borderWidth: 0.3, borderRadius: 10 }}>
+         
+            <View style={{ width: "90%", height: 50, backgroundColor: 'white', marginBottom: 10, flexDirection: 'row', alignItems: 'center', borderColor: '#808080', borderWidth: 0.3, borderRadius: 10 }}>
 
             <View style={{ backgroundColor: 'white', width: '42%', marginHorizontal: 20 }}>
              {
@@ -514,14 +516,10 @@ const fetchPointsHistory = async () => {
             </View>}
 
           </View>
-          }
+          
                {scanningDetails && scanningDetails?.data.length!==0 &&  <ScannedDetailsBox lastScannedDate={moment(scanningDetails?.data[0]?.created_at).format("DD MMM YYYY")} scanCount={scanningDetails.total}></ScannedDetailsBox>}
 
-          <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 4 }}>
-            {/* <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
-          <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
-
-          </ScrollView>
+         
           
            
           {dashboardItems && !userPointIsLoading && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
@@ -540,44 +538,80 @@ const fetchPointsHistory = async () => {
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
           {/* social links */}
-          <View style={{alignItems:'center',justifyContent:'flex-end',flexDirection:'row',width:'90%',marginBottom:4}}>
+          <View style={{alignItems:'center',justifyContent:'flex-end',flexDirection:'row',width:'90%',marginBottom:40}}>
          
           {showLink && <View style={{alignItems:'center',justifyContent:'space-evenly', width:'85%',height:60,flexDirection:'row',marginBottom:10}}>
-            
-               <TouchableOpacity onPress={()=>{
-                Linking.openURL('https://www.facebook.com/HarshitaLeggings/')
-                }
-                }>
-                <Facebook name="facebook-square" size={40} color="blue"></Facebook> 
-    
-                </TouchableOpacity>
-       
-           
-            <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://www.hirshita.com/?fbclid=IwAR3_IGHfXqw-8qujD6qpcXRXtI4xsXeH-bwKnLc3WFKlkjgYsjvIuk_WvoY')
+
+
+  <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
+    return(
+      <FadeInOutAnimations comp={()=>{
+        return(
+          <TouchableOpacity onPress={()=>{
+            Linking.openURL('https://www.facebook.com/HarshitaLeggings/')
             }
             }>
-              <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
-          <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/hirshitaSquirrel.png')}></Image>
-              </View>
-              
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://londondream.in/')
-            }
-            }>
-              <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
-          <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/LondonDreamsIcon.png')}></Image>
-              </View>
-              
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{
-            Linking.openURL('https://www.instagram.com/harshita_leggings/')
-            }
-            }>
-          <Instagram name="instagram" size={40} color="red"></Instagram> 
-              
-              </TouchableOpacity>
+            <Facebook name="facebook-square" size={40} color="blue"></Facebook> 
+
+            </TouchableOpacity>
+        )
+      }}></FadeInOutAnimations>
+    )
+  }} />
+
+          
+               
+          <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
+                      return(
+                        <FadeInOutAnimations comp={()=>{
+                          return(
+                      <TouchableOpacity onPress={()=>{
+                      Linking.openURL('https://www.hirshita.com/?fbclid=IwAR3_IGHfXqw-8qujD6qpcXRXtI4xsXeH-bwKnLc3WFKlkjgYsjvIuk_WvoY')
+                      }
+                      }>
+                        <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
+                    <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/hirshitaSquirrel.png')}></Image>
+                        </View>
+                        
+                        </TouchableOpacity>
+                        )
+                      }}></FadeInOutAnimations>
+                      )
+                    }} />
+
+          <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
+                      return(
+                        <FadeInOutAnimations comp={()=>{
+                                        return(
+                                      <TouchableOpacity onPress={()=>{
+                                    Linking.openURL('https://londondream.in/')
+                                    }
+                                    }>
+                                      <View style={{height:50,width:50,backgroundColor:'#DDE8EE',alignItems:'center',justifyContent:'center',borderRadius:25}}>
+                                  <Image style={{height:50,width:50}} resizeMode='contain' source={require('../../../assets/images/LondonDreamsIcon.png')}></Image>
+                                      </View>
+                                      
+                                      </TouchableOpacity>
+                                      )
+                                      }}></FadeInOutAnimations>
+                                      )
+                    }} />
+
+          <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
+                      return(
+                        <FadeInOutAnimations comp={()=>{
+                                        return(
+                                      <TouchableOpacity onPress={()=>{
+                                    Linking.openURL('https://www.instagram.com/harshita_leggings/')
+                                    }
+                                    }>
+                                  <Instagram name="instagram" size={40} color="red"></Instagram> 
+                                      
+                                      </TouchableOpacity>
+                                      )
+                                    }}></FadeInOutAnimations>
+                                    )
+                                  }} />
 
           </View>}
           <TouchableOpacity style={{width:'15%',marginBottom:10}} onPress={()=>{setShowLink(!showLink)}}>
@@ -588,12 +622,7 @@ const fetchPointsHistory = async () => {
           </View>
           
           {/* --------------------- */}
-          {(userData.user_type).toLowerCase()!=="dealer" && (userData.user_type).toLowerCase()!=="sales" &&<View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center",marginBottom:30 }}>
-            <DashboardSupportBox text="Rewards" backgroundColor="#D9C7B6" borderColor="#FEE8D4" image={require('../../../assets/images/reward_dashboard.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Customer Support" backgroundColor="#BCB5DC" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Feedback" backgroundColor="#D8C8C8" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
-
-          </View>}
+         
           
            
         </View>

@@ -1,27 +1,25 @@
-import React,{useRef,useEffect} from 'react';
-import {View, StyleSheet,Animated} from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
+
 const ZoomViewAnimations = (props) => {
-    
-    const zoomAnimations = useRef(new Animated.Value(0)).current;
-    const duration = props.duration
-    const zoom = props.zoom
-    useEffect(() => {
-       Animated.sequence([
-        Animated.timing(zoomAnimations, { toValue: zoom, duration: duration,useNativeDriver:false }).start(),
-        Animated.timing(zoomAnimations, { toValue: 100, duration: duration,useNativeDriver:false }).start()
+  const zoomAnimation = useRef(new Animated.Value(1)).current;
 
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(zoomAnimation, { toValue: 1.2, duration: 1000, useNativeDriver: true }),
+      Animated.timing(zoomAnimation, { toValue: 1, duration: 1000, useNativeDriver: true }),
+    ]).start();
+  }, [zoomAnimation]);
 
-       ])
-          
-      }, [zoomAnimations]);
-
-    return (
-        <Animated.View style={{height:zoomAnimations,width:zoomAnimations, ...props.style}}>
-            {<props.comp></props.comp>}
-        </Animated.View>
-    );
+  return (
+    <Animated.View style={{ transform: [{ scale: zoomAnimation }], ...props.style }}>
+      {<props.comp />}
+    </Animated.View>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
 
 export default ZoomViewAnimations;
+
+

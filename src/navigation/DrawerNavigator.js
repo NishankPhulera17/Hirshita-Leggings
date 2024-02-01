@@ -358,6 +358,9 @@ const CustomDrawer = () => {
               else if (props.title.toLowerCase() === "scan list") {
                 navigation.navigate('ScannedHistory')
               }
+              else if (props.title.toLowerCase() === "feedback") {
+                navigation.navigate('Feedback')
+              }
               else if (props.title.toLowerCase() === "add user") {
                 navigation.navigate('ListUsers')
               }
@@ -379,7 +382,7 @@ const CustomDrawer = () => {
               }
             }}>
               {console.log("props.title", props.title)}
-            <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{props.title == "Passbook" ? "My Loyalty" : props.title == "Profile" ? "My Profile" : props.title == "Rewards" ? "My Rewards" : props.title}</Text>
+            <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{props.title}</Text>
           </TouchableOpacity>
         </View>
       </View>
