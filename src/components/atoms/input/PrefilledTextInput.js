@@ -29,11 +29,11 @@ const PrefilledTextInput = (props) => {
         console.log("tempJsonData",tempJsonData)
         props.handleData(tempJsonData,props.placeHolder)
         // console.log("keyboard visible",keyboardShow,placeHolder)
-    },[keyboardShow])
+    },[keyboardShow,value])
 
     const handleInput=(text)=>{
         setValue(text)
-        // props.handleData(value)
+        props.handleData(value)
        
     }
     

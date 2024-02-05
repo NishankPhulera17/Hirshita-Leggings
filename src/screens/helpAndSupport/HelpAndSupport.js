@@ -17,6 +17,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Keychain from 'react-native-keychain';
 import {useSelector} from 'react-redux';
+import Whatsapp from 'react-native-vector-icons/FontAwesome';
+
 
 const HelpAndSupport = ({navigation}) => {
   const ternaryThemeColor = useSelector(
@@ -36,6 +38,7 @@ const HelpAndSupport = ({navigation}) => {
         backgroundColor: "white",
         height: '100%',
       }}>
+        
       <View
         style={{
           alignItems: 'center',
@@ -68,6 +71,7 @@ const HelpAndSupport = ({navigation}) => {
             color: 'black',
           }}></PoppinsTextMedium>
       </View>
+      <ScrollView style={{width:'100%',height:'100%'}}>
             <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'40%'}}>
               <Image style={{height:300,width:300,resizeMode:"contain"}} source={require('../../../assets/images/customerSupportnew.png')}></Image>
             </View>
@@ -86,6 +90,27 @@ const HelpAndSupport = ({navigation}) => {
           }}></PoppinsTextMedium>
           <PoppinsTextMedium
           content={supportMail}
+          style={{
+            marginLeft: 10,
+            fontSize: 16,
+            fontWeight: '700',
+            color: 'white',
+          }}></PoppinsTextMedium>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{Linking.openURL(`whatsapp://send?text=Hi Welcome To BTPL World&phone=+918888788080`)}} style={{width:'90%',alignItems:'center',justifyContent:'center',paddingBottom:20,borderBottomWidth:1,borderColor:'#DDDDDD',marginTop:10}}>
+              <View style={{height:60,width:60,borderRadius:30,alignItems:"center",justifyContent:"center"}}>
+              <Whatsapp name="whatsapp" size={40} color="white"></Whatsapp>
+              </View>
+              <PoppinsTextMedium
+          content="Whatsapp us"
+          style={{
+            marginLeft: 10,
+            fontSize: 16,
+            fontWeight: '700',
+            color: 'white',
+          }}></PoppinsTextMedium>
+          <PoppinsTextMedium
+          content={supportMobile}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -115,6 +140,7 @@ const HelpAndSupport = ({navigation}) => {
           }}></PoppinsTextMedium>
             </TouchableOpacity>
           </View>
+          </ScrollView>
         </View>
     );
 }

@@ -43,9 +43,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import FadeInOutAnimations from '../../components/animations/FadeInOutAnimations';
 import RotateViewAnimation from '../../components/animations/RotateViewAnimation';
 import ZoomViewAnimations from '../../components/animations/ZoomViewAnimations';
-
-
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import messaging from '@react-native-firebase/messaging';
+import ModalWithBorder from '../../components/modals/ModalWithBorder';
+import Close from 'react-native-vector-icons/Ionicons';
+import {GoogleMapsKey} from '@env'
+ 
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState()
@@ -55,6 +58,8 @@ const Dashboard = ({ navigation }) => {
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
   const [membership, setMembership] = useState()
   const [scanningDetails, seScanningDetails] = useState()
+  const [notifModal, setNotifModal] = useState(false)
+  const [notifData, setNotifData] = useState(null)
   const [showLink, setShowLink] = useState(false)
   const focused = useIsFocused()
   const dispatch = useDispatch()
@@ -181,7 +186,7 @@ const Dashboard = ({ navigation }) => {
       // getLocation(JSON.stringify(lat),JSON.stringify(lon))
       console.log("latlong", lat, lon)
       var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
-          &location_type=ROOFTOP&result_type=street_address&key=AIzaSyB73p4PDmuZmvTvR93FXQVXgfStWEz9XKM`
+          &location_type=ROOFTOP&result_type=street_address&key=${GoogleMapsKey}`
 
       fetch(url).then(response => response.json()).then(json => {
         console.log("location address=>", JSON.stringify(json));
@@ -452,6 +457,51 @@ const fetchPointsHistory = async () => {
     setIsSuccessModalVisible(true);
     console.log("hello")
   };
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log("remote", remoteMessage)
+      // Alert.alert(JSON.stringify(remoteMessage?.notification?.title ? remoteMessage?.notification?.title : "Notification"), JSON.stringify(remoteMessage?.notification?.body));
+      setNotifModal(true)
+      setNotifData(remoteMessage?.notification)
+
+    });
+
+    return unsubscribe;
+  }, []);
+
+
+  useEffect(()=>{
+
+  console.log("Notification data",notifData,notifModal)
+  },[notifModal,notifData])
+
+
+
+
+  const notifModalFunc = () => {
+    return (
+      <View style={{height:130,width:'90%',alignItems:"center",justifyContent:'center'  }}>
+        <View style={{ height: '100%', width:'100%', alignItems:'center',}}>
+          <View>
+          {/* <Bell name="bell" size={18} style={{marginTop:5}} color={ternaryThemeColor}></Bell> */}
+
+          </View>
+          <PoppinsTextLeftMedium content={notifData?.title ? notifData?.title : "Notification Title"} style={{ color: ternaryThemeColor, fontWeight:'800', fontSize:20, marginTop:8 }}></PoppinsTextLeftMedium>
+      
+          <PoppinsTextLeftMedium content={notifData?.title ? notifData?.title : "Notification Body"} style={{ color: '#000000', marginTop:10, padding:10, fontSize:15, fontWeight:'600' }}></PoppinsTextLeftMedium>
+        </View>
+
+        <TouchableOpacity style={[{
+          backgroundColor: ternaryThemeColor,  borderRadius: 5, position: 'absolute', top: 0, right: -15,
+        }]} onPress={() => setNotifModal(false)} >
+          <Close name="close" size={24} color="#ffffff" />
+        </TouchableOpacity>
+
+
+
+      </View>
+    )
+  }
 
   
 
@@ -540,7 +590,7 @@ const fetchPointsHistory = async () => {
           {/* social links */}
           <View style={{alignItems:'center',justifyContent:'flex-end',flexDirection:'row',width:'90%',marginBottom:40}}>
          
-          {showLink && <View style={{alignItems:'center',justifyContent:'space-evenly', width:'85%',height:60,flexDirection:'row',marginBottom:10}}>
+          {showLink && <View style={{alignItems:'center',justifyContent:'space-evenly', width:'90%',height:60,flexDirection:'row',marginBottom:10}}>
 
 
   <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
@@ -558,7 +608,22 @@ const fetchPointsHistory = async () => {
       }}></FadeInOutAnimations>
     )
   }} />
+  <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
+    return(
+      <FadeInOutAnimations comp={()=>{
+        return(
+          <TouchableOpacity onPress={()=>{
+            Linking.openURL('whatsapp://send?text=Hi Welcome To BTPL World&phone=+918888788080')
+            }
+            }>
+            <Icon name="whatsapp" size={40} color="green"></Icon>
 
+            </TouchableOpacity>
+        )
+      }}></FadeInOutAnimations>
+    )
+  }} />
+      
           
                
           <RotateViewAnimation outputRange={["0deg","60deg", "-60deg","0deg"]} inputRange={[0,1,2,3]} comp={()=>{
@@ -624,7 +689,13 @@ const fetchPointsHistory = async () => {
           {/* --------------------- */}
          
           
-           
+          {notifModal &&  <ModalWithBorder
+            modalClose={() => {
+              setNotifModal(false)
+            }}
+            message={"message"}
+            openModal={notifModal}
+            comp={notifModalFunc}></ModalWithBorder>}
         </View>
        
       </ScrollView>

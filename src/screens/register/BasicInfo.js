@@ -43,6 +43,7 @@ import DropDownRegistration from '../../components/atoms/dropdown/DropDownRegist
 import EmailTextInput from '../../components/atoms/input/EmailTextInput';
 import { validatePathConfig } from '@react-navigation/native';
 import { user_type_option } from '../../utils/usertTypeOption';
+import {GoogleMapsKey} from '@env'
 
 
 const BasicInfo = ({ navigation, route }) => {
@@ -202,7 +203,7 @@ const BasicInfo = ({ navigation, route }) => {
       // getLocation(JSON.stringify(lat),JSON.stringify(lon))
       console.log("latlong", lat, lon)
       var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
-        &location_type=ROOFTOP&result_type=street_address&key=AIzaSyB73p4PDmuZmvTvR93FXQVXgfStWEz9XKM` 
+        &location_type=ROOFTOP&result_type=street_address&key=${GoogleMapsKey}` 
 
       fetch(url).then(response => response.json()).then(json => {
         console.log("location address=>", JSON.stringify(json));
@@ -406,9 +407,11 @@ const BasicInfo = ({ navigation, route }) => {
 
 
   const handleChildComponentData = data => {
-
     // setOtpVisible(true)
+    console.log("name is khan",data.name === "name")
+
     if (data.name === "name") {
+
       setUserName(data.value)
     }
     if(data.name=="mobile"){

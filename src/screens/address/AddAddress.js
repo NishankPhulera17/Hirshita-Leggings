@@ -11,6 +11,9 @@ import * as Keychain from "react-native-keychain";
 import { useAddAddressMutation } from "../../apiServices/userAddress/UserAddressApi";
 import MessageModal from "../../components/modals/MessageModal";
 import ErrorModal from "../../components/modals/ErrorModal";
+import {GoogleMapsKey} from '@env'
+
+
 const AddAddress = ({ navigation }) => {
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
@@ -68,7 +71,7 @@ const AddAddress = ({ navigation }) => {
       // getLocation(JSON.stringify(lat),JSON.stringify(lon))
       console.log("latlong", lat, lon);
       var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
-            &location_type=ROOFTOP&result_type=street_address&key=AIzaSyB73p4PDmuZmvTvR93FXQVXgfStWEz9XKM`;
+            &location_type=ROOFTOP&result_type=street_address&key=${GoogleMapsKey}`;
 
       fetch(url)
         .then((response) => response.json())
