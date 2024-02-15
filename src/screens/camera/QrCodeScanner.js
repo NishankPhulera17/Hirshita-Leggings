@@ -441,7 +441,18 @@ const QrCodeScanner = ({ navigation }) => {
     }
     else {
       const tempVerifiedArray = [...verifiedQrArray]
-      const qrData = e.data.split('=')[1];
+      let qrData;
+      if(e.data.includes('='))
+      {
+        console.log("includes =")
+       qrData = e.data.split('=')[1];
+        
+      }
+      else {
+        console.log("dosen't includes =")
+        qrData = e.data
+      }
+
       console.log("qrData", qrData);
      
         if(qrType==="")

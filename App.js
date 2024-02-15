@@ -6,6 +6,8 @@ import { Provider } from 'react-redux'
 import messaging from '@react-native-firebase/messaging';
 import ModalWithBorder from './src/components/modals/ModalWithBorder';
 import Close from 'react-native-vector-icons/Ionicons';
+import VersionCheck from 'react-native-version-check';
+
 
 const App = () => {
 
@@ -24,6 +26,50 @@ const App = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const checkAppVersion = async () => {
+      try {
+const latestVersion = Platform.OS === 'ios'? await fetch(`https://itunes.apple.com/in/lookup?bundleId=com.hirshita`)
+                .then(r => r.json())
+                .then((res) => { return res?.results[0]?.version })
+                : await VersionCheck.getLatestVersion({
+                    provider: 'playStore',
+                    forceUpdate: true,
+                   
+                });
+
+        const currentVersion = VersionCheck.getCurrentVersion();
+
+        console.log("current verison and new version,",currentVersion, latestVersion)
+        if (latestVersion > currentVersion) {
+          Alert.alert(
+            'Update Required',
+'A new version of the app is available. Please update to continue using the app.',
+            [
+              {
+                text: 'Update Now',
+                onPress: () => {
+                  Linking.openURL(
+                    Platform.OS === 'ios'
+                      ? 'https://hirshita.com/'
+                      : "https://play.google.com/store/apps/details?id=com.hirshita"
+                  );
+                },
+              },
+            ],
+            { cancelable: false }
+          );
+        } else {
+          // App is up-to-date; proceed with the app
+        }
+      } catch (error) {
+        // Handle error while checking app version
+        console.error('Error checking app version:', error);
+      }
+    };
+
+    checkAppVersion();
+  }, []);
 
   useEffect(()=>{
 
