@@ -632,14 +632,15 @@ const QrCodeScanner = ({ navigation }) => {
       if(parentChildQrScanData?.success)
       {
         setAddedQrList( parentChildQrScanData?.body?.qr)
+        const qrList = parentChildQrScanData?.body?.qr[0]
         
-        const qrIdList=[]
-        const qrList = parentChildQrScanData?.body?.qr
-        for(var i =0;i<qrList.length;i++)
-        {
-          qrIdList.push(qrList[i].id)
-        }
+        let qrIdList= [...addedQrList,qrList]
+        // for(var i =0;i<qrIdList.length;i++)
+        // {
+        //   qrIdList.push(qrList[i].id)
+        // }
         console.log("qridlist",qrIdList)
+        setAddedQrList(qrIdList)
         dispatch(setQrIdList(qrIdList))
       }
     }

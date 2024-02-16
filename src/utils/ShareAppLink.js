@@ -1,1 +1,1 @@
-export const shareAppLink = ""
+export const shareAppLink = "https://play.google.com/store/apps/details?id=com.hirshita"

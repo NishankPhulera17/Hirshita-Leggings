@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Linking, Platform } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking, Platform,Alert } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Dashboard from '../screens/dashboard/Dashboard';
 import BottomNavigator from './BottomNavigator';
@@ -23,6 +23,7 @@ import PoppinsTextMedium from '../components/electrons/customFonts/PoppinsTextMe
 import PoppinsTextLeftMedium from '../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useFetchLegalsMutation } from '../apiServices/fetchLegal/FetchLegalApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import VersionCheck from 'react-native-version-check';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer = () => {
@@ -366,6 +367,49 @@ const CustomDrawer = () => {
               }
               else if (props.title.toLowerCase() === "query list") {
                 navigation.navigate('QueryList')
+              }
+              else if (props.title.toLowerCase() === "check update") {
+                const checkAppVersion = async () => {
+                  try {
+            const latestVersion = Platform.OS === 'ios'? await fetch(`https://itunes.apple.com/in/lookup?bundleId=com.hirshita`)
+                            .then(r => r.json())
+                            .then((res) => { return res?.results[0]?.version })
+                            : await VersionCheck.getLatestVersion({
+                                provider: 'playStore',
+                               
+                            });
+            
+                    const currentVersion = VersionCheck.getCurrentVersion();
+            
+                    console.log("current verison and new version,",currentVersion, latestVersion)
+                    if (latestVersion > currentVersion) {
+                      Alert.alert(
+                        'Update Required',
+            'A new version of the app is available. Please update to continue using the app.',
+                        [
+                          {
+                            text: 'Update Now',
+                            onPress: () => {
+                              Linking.openURL(
+                                Platform.OS === 'ios'
+                                  ? 'https://hirshita.com/'
+                                  : "https://play.google.com/store/apps/details?id=com.hirshita"
+                              );
+                            },
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                    } else {
+                      alert("The application is up to date")
+                    }
+                  } catch (error) {
+                    // Handle error while checking app version
+                    console.error('Error checking app version:', error);
+                  }
+                };
+            
+                checkAppVersion();
               }
               else if (props.title.toLowerCase() === "share app") {
                 const options = {

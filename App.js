@@ -35,7 +35,6 @@ const latestVersion = Platform.OS === 'ios'? await fetch(`https://itunes.apple.c
                 : await VersionCheck.getLatestVersion({
                     provider: 'playStore',
                     forceUpdate: true,
-                   
                 });
 
         const currentVersion = VersionCheck.getCurrentVersion();
