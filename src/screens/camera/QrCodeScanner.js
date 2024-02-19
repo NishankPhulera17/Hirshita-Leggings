@@ -631,13 +631,21 @@ const QrCodeScanner = ({ navigation }) => {
       console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
       if(parentChildQrScanData?.success)
       {
-        addQrDataToList(parentChildQrScanData?.body?.qr)
-        // setAddedQrList( parentChildQrScanData?.body?.qr)
-        // const qrList = parentChildQrScanData?.body?.qr[0]
+        // addQrDataToList(parentChildQrScanData?.body?.qr)
+        
+        setAddedQrList([...addedQrList, ...parentChildQrScanData?.body?.qr])
+        let qrIdList=[]
+
+        const qrList = [...addedQrList, ...parentChildQrScanData?.body?.qr]
+
+        for(var i =0;i<qrList.length;i++)
+        {
+          qrIdList.push(qrList[i].id)
+        }
         
        
-        // setAddedQrList(qrIdList)
-        // dispatch(setQrIdList(qrIdList))
+       
+        dispatch(setQrIdList(qrIdList))
       }
     }
     else if (parentChildQrScanError) {
