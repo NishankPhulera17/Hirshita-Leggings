@@ -490,7 +490,7 @@ const QrCodeScanner = ({ navigation }) => {
           console.log("tempVerifiedArrayParent_child",tempVerifiedArray,addedQrList)
   
     const requestData = { unique_code: qrData,"platform_id" : 1 ,
-    "scanned_by_name":"tushar" };
+    "scanned_by_name":userData.name };
   
           const verifyQR = async data => {
             console.log('verifyQR', data); 

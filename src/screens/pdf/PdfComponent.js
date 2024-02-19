@@ -1,26 +1,21 @@
 import React,{useEffect} from 'react';
-import { StyleSheet, Dimensions, View,BackHandler} from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
 import Pdf from 'react-native-pdf';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
-const PdfComponent = ({route,navigation}) => {
-    const pdf = route.params.pdf
-    const pdfLink = BaseUrlImages+pdf
-    const source = { uri: pdfLink, cache: true };
-    
-    useEffect(()=>{
-        return () =>BackHandler.removeEventListener()
-    },[])
+const PdfComponent = ({route}) => {
+    const pdf = route?.params?.pdf
+    const pdfLink = pdf == null ?  BaseUrlImages : BaseUrlImages+pdf
+    const source = pdf == null ? { uri: BaseUrlImages, cache: true } : { uri: pdfLink, cache: true };
+    // useEffect(()=>{
+    //     return () =>BackHandler.removeEventListener()
+    // },[])
     return (
         <View style={styles.container}>
-                <Pdf
-
+                {pdf!=undefined && pdf!=null && <Pdf
                 trustAllCerts={false}
-                    source={source}
+                    source={pdf && source}
                     onLoadComplete={(numberOfPages,filePath) => {
-                         BackHandler.addEventListener('hardwareBackPress', ()=>{
-                            navigation.goBack()
-                        })
                         console.log(`Number of pages: ${numberOfPages}`);
                     }}
                     onPageChanged={(page,numberOfPages) => {
@@ -30,9 +25,10 @@ const PdfComponent = ({route,navigation}) => {
                         console.log(error);
                     }}
                     onPressLink={(uri) => {
-                        console.log(`Link pressed: ${uri}`);
+
+                       console.log(`Link pressed: ${uri}`);
                     }}
-                    style={styles.pdf}/>
+                    style={styles.pdf}/>}
             </View>
     );
 }

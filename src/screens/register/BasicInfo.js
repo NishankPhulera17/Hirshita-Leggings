@@ -408,19 +408,19 @@ const BasicInfo = ({ navigation, route }) => {
 
   const handleChildComponentData = data => {
     // setOtpVisible(true)
-    console.log("name is khan",data.name === "name")
+    console.log("name is khan",data?.name === "name")
 
-    if (data.name === "name") {
+    if (data?.name === "name") {
 
       setUserName(data.value)
     }
-    if(data.name=="mobile"){
+    if(data?.name=="mobile"){
       setUserMobile(data.value)
     }
     // console.log("isValidEmail", isValidEmail(data.value))
 
-    if (data.name === "email") {
-      console.log("from text input", data.name);
+    if (data?.name === "email") {
+      console.log("from text input", data?.name);
 
       console.log("isValidEmail", isValidEmail(data.value), isValid)
 
@@ -431,13 +431,13 @@ const BasicInfo = ({ navigation, route }) => {
 
 
 
-    if (data.name === "mobile") {
+    if (data?.name === "mobile") {
       setUserMobile(data.value)
     }
     // Update the responseArray state with the new data
     setResponseArray(prevArray => {
       const existingIndex = prevArray.findIndex(
-        item => item.name === data.name,
+        item => item.name === data?.name,
       );
 
       if (existingIndex !== -1) {
@@ -477,7 +477,7 @@ const BasicInfo = ({ navigation, route }) => {
         "district":json.PostOffice[0].District,
         "state":json.PostOffice[0].State,
         "country":json.PostOffice[0].Country,
-        "city":json.PostOffice[0].Region
+        "city":json.PostOffice[0].Circle
       }
       setLocation(locationJson)
     }
