@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, Alert, Text,TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Alert, Text,TouchableOpacity,Linking } from 'react-native';
 import StackNavigator from './src/navigation/StackNavigator';
 import { store } from './redux/store';
 import { Provider } from 'react-redux'

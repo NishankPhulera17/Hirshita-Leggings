@@ -24,9 +24,12 @@ const RedeemedHistory = ({ navigation }) => {
   const [success, setSuccess] = useState(false)
   const [redemptionStartData, setRedemptionStartDate]  = useState()
   const [redemptionEndDate, setRedemptionEndDate] = useState()
+  const [minRedemptionPoints, setMinRedemptionPoints] = useState()
   const [showKyc, setShowKyc] = useState(true)
   const [redeemedListData, setRedeemedListData] = useState([])
   const [redemptionWindowEligibility, setRedemptionWindowEligibility] = useState(true)
+  const [pointBalance, setPointBalance] = useState()
+
   const [navigateTo, setNavigateTo] = useState()
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -130,6 +133,8 @@ const RedeemedHistory = ({ navigation }) => {
           const temp = cashPerPointData?.body
           setRedemptionStartDate(temp.redeem_start_date)
           setRedemptionEndDate(temp.redeem_end_date)
+          setMinRedemptionPoints(temp?.min_point_redeem)
+
         }
     }
     else if(cashPerPointError){
@@ -141,6 +146,11 @@ const RedeemedHistory = ({ navigation }) => {
   useEffect(() => {
     if (userPointData) {
       console.log("userPointData", userPointData)
+      if(userPointData.success)
+      {
+      setPointBalance(userPointData.body.point_balance)
+
+      }
     }
     else if (userPointError) {
       console.log("userPointError", userPointError)
@@ -240,12 +250,18 @@ const RedeemedHistory = ({ navigation }) => {
         setError(true)
         setMessage("Sorry you don't have enough points.")
       }
+      else if(Number(minRedemptionPoints)>Number(pointBalance))
+      {
+        console.log("Minimum Point required to redeem is : ",minRedemptionPoints)
+        setError(true)
+        setMessage(`Minimum Point required to redeem is : ${minRedemptionPoints}`)
+      }
       else {
         
-        if(Number(new Date(redemptionStartData).getTime()) < Number(new Date().getTime()) < Number(new Date(redemptionEndDate).getTime()) )
+        if((Number(new Date(redemptionStartData).getTime()) < Number(new Date().getTime()) ) &&  ( Number(new Date().getTime()) < Number(new Date(redemptionEndDate).getTime())) )
         {
           
-          console.log("correct redemption date",new Date().getTime(),new Date(redemptionStartData).getTime(),new Date(redemptionEndDate).getTime())
+          console.log("correct redemption date",new Date().getTime(),new Date(redemptionStartData).getTime(),new Date(redemptionEndDate).getTime(),redemptionStartData,redemptionEndDate,new Date())
         if(!showKyc)
         {
           setModalVisible(true)
@@ -263,6 +279,34 @@ const RedeemedHistory = ({ navigation }) => {
       }
 
     }
+    // const handleRedeemButtonPress = () => {
+    //   if (Number(userPointData.body.point_balance) <= 0 ) {
+    //     setError(true)
+    //     setMessage("Sorry you don't have enough points.")
+    //   }
+    //   else {
+        
+    //     if(Number(new Date(redemptionStartData).getTime()) < Number(new Date().getTime()) < Number(new Date(redemptionEndDate).getTime()) )
+    //     {
+          
+    //       console.log("correct redemption date",new Date().getTime(),new Date(redemptionStartData).getTime(),new Date(redemptionEndDate).getTime())
+    //     if(!showKyc)
+    //     {
+    //       setModalVisible(true)
+    //     }
+    //     else{
+    //       setError(true)
+    //       setMessage("Kyc not completed yet")
+    //       setNavigateTo("Verification")
+    //     }
+    //     }
+    //     else{
+    //       setError(true)
+    //     setMessage("Redemption window starts from "+ moment(redemptionStartData).format("DD-MMM-YYYY") + " and ends on " +  moment(redemptionEndDate).format("DD-MMM-YYYY"))
+    //     }
+    //   }
+
+    // }
     return (
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
         <Modal
