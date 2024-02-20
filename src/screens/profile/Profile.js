@@ -466,7 +466,7 @@ const Profile = ({ navigation }) => {
       {!showNoDataFoundMessage && <ProfileHeader></ProfileHeader>}
       {fetchProfileData && <GreyBar></GreyBar>}
       
-        <DeleteModal hideModal = {hideModal} modalVisible={showDeleteModal}></DeleteModal>
+       {showDeleteModal && <DeleteModal hideModal = {hideModal} modalVisible={showDeleteModal}></DeleteModal>}
       
       <ScrollView>
 
