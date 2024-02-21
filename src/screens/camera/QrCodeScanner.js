@@ -626,44 +626,74 @@ const QrCodeScanner = ({ navigation }) => {
   // --------------------------------------------------------
 
   // getting verify qr data --------------------------
+  // useEffect(() => {
+  //   if (parentChildQrScanData) {
+  //     console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
+  //     if(parentChildQrScanData?.success)
+  //     {
+  //       // addQrDataToList(parentChildQrScanData?.body?.qr)
+        
+  //       setAddedQrList([...addedQrList, ...parentChildQrScanData?.body?.qr])
+  //       let qrIdList=[]
+
+  //       const qrList = [...addedQrList, ...parentChildQrScanData?.body?.qr]
+
+  //       for(var i =0;i<qrList.length;i++)
+  //       {
+  //         qrIdList.push(qrList[i].id)
+  //       }
+        
+       
+       
+  //       dispatch(setQrIdList(qrIdList))
+  //     }
+  //   }
+  //   else if (parentChildQrScanError) {
+  //     console.log("parentChildQrScanError",parentChildQrScanError)
+  //     if (parentChildQrScanError === undefined) {
+
+  //       setError(true)
+  //       setMessage("This QR is not activated yet")
+  //     }
+  //     else {
+  //       setError(true)
+  //       setMessage(parentChildQrScanError.data?.message);
+
+  //     }
+  //     console.log('Verify qr error parent child', parentChildQrScanError.data.Error);
+
+  //   }
   useEffect(() => {
     if (parentChildQrScanData) {
       console.log('Verify qr data parent child', JSON.stringify(parentChildQrScanData));
-      if(parentChildQrScanData?.success)
-      {
-        // addQrDataToList(parentChildQrScanData?.body?.qr)
+      if (parentChildQrScanData.success) {
+        // Create a set to store unique QR IDs
+        const uniqueQrIds = new Set(addedQrList.map(qr => qr.id));
         
-        setAddedQrList([...addedQrList, ...parentChildQrScanData?.body?.qr])
-        let qrIdList=[]
-
-        const qrList = [...addedQrList, ...parentChildQrScanData?.body?.qr]
-
-        for(var i =0;i<qrList.length;i++)
-        {
-          qrIdList.push(qrList[i].id)
-        }
+        // Filter out duplicate QR data and update addedQrList
+        const filteredQrData = parentChildQrScanData.body.qr.filter(qr => !uniqueQrIds.has(qr.id));
+        setAddedQrList(prevList => [...prevList, ...filteredQrData]);
         
-       
-       
-        dispatch(setQrIdList(qrIdList))
+        // Extract QR IDs from the combined list of added and new QRs
+        const qrIdList = [...addedQrList, ...filteredQrData].map(qr => qr.id);
+  
+        // Dispatch the QR ID list to Redux state
+        dispatch(setQrIdList(qrIdList));
       }
-    }
-    else if (parentChildQrScanError) {
-      console.log("parentChildQrScanError",parentChildQrScanError)
+    } else if (parentChildQrScanError) {
+      console.log("parentChildQrScanError", parentChildQrScanError);
       if (parentChildQrScanError === undefined) {
-
-        setError(true)
-        setMessage("This QR is not activated yet")
-      }
-      else {
-        setError(true)
+        setError(true);
+        setMessage("This QR is not activated yet");
+      } else {
+        setError(true);
         setMessage(parentChildQrScanError.data?.message);
-
       }
       console.log('Verify qr error parent child', parentChildQrScanError.data.Error);
-
     }
   }, [parentChildQrScanData, parentChildQrScanError]);
+  
+  
 
   useEffect(() => {
     if (verifyQrData) {

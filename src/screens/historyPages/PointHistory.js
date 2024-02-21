@@ -164,7 +164,7 @@ const PointHistory = ({ navigation }) => {
     const PointCategoryTab = () => {
         const [type, setType] = useState("")
         return (
-            <View style={{ width: '100%', backgroundColor: 'white', height: 60, elevation: 1, flexDirection: 'row', opacity: 0.8, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: "grey" }}>
+            <View style={{ width: '100%', backgroundColor: 'white', height: 60, elevation: 1, flexDirection: 'row', opacity: 0.8, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: "grey",marginTop:20 }}>
                 {registrationRequired.includes(userData.user_type) &&
                     <TouchableOpacity onPress={() => {
                         fetchPoints()
@@ -362,7 +362,7 @@ const PointHistory = ({ navigation }) => {
             </View>
 
             <DisplayEarnings></DisplayEarnings>
-            <Header></Header>
+            {/* <Header></Header> */}
             <PointCategoryTab></PointCategoryTab>
 
             {
