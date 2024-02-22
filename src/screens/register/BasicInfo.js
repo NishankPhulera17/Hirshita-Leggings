@@ -412,17 +412,17 @@ const BasicInfo = ({ navigation, route }) => {
 
     if (data?.name === "name") {
 
-      setUserName(data.value)
+      setUserName(data?.value)
     }
     if(data?.name=="mobile"){
-      setUserMobile(data.value)
+      setUserMobile(data?.value)
     }
     // console.log("isValidEmail", isValidEmail(data.value))
 
     if (data?.name === "email") {
       console.log("from text input", data?.name);
 
-      console.log("isValidEmail", isValidEmail(data.value), isValid)
+      console.log("isValidEmail", isValidEmail(data?.value), isValid)
 
     }
 
@@ -432,12 +432,12 @@ const BasicInfo = ({ navigation, route }) => {
 
 
     if (data?.name === "mobile") {
-      setUserMobile(data.value)
+      setUserMobile(data?.value)
     }
     // Update the responseArray state with the new data
     setResponseArray(prevArray => {
       const existingIndex = prevArray.findIndex(
-        item => item.name === data?.name,
+        item => item?.name === data?.name,
       );
 
       if (existingIndex !== -1) {
@@ -445,7 +445,7 @@ const BasicInfo = ({ navigation, route }) => {
         const updatedArray = [...prevArray];
         updatedArray[existingIndex] = {
           ...updatedArray[existingIndex],
-          value: data.value,
+          value: data?.value,
         };
         return updatedArray;
       } else {

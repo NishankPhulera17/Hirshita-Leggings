@@ -240,22 +240,22 @@ const AddUser = ({ navigation }) => {
 
     let submissionData = [...userResponse];
     let removedValues = submissionData.filter((item, index) => {
-      return item.name !== data.name;
+      return item?.name !== data?.name;
     });
 
     if (data?.name == "email") {
       console.log('entering')
       const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      const checkEmail = emailRegex.test(data.value)
+      const checkEmail = emailRegex.test(data?.value)
       setIsValidEmail(checkEmail);
     }
 
 
-    if (data.name === "user_type") {
+    if (data?.name === "user_type") {
       console.log("inside user_type", userTypeList)
       userTypeList.map((item, index) => {
         console.log("item", item)
-        if (item.userType === data.value) {
+        if (item?.userType === data?.value) {
           removedValues.push({
             value: item.userTypeId,
             name: "user_type_id",
@@ -391,9 +391,9 @@ const AddUser = ({ navigation }) => {
             addUserForm.map((item, index) => {
               console.log("items in the list are", item)
 
-              if (item.type === 'text') {
+              if (item?.type === 'text') {
 
-                if (item.name === 'phone' || item.name === "mobile") {
+                if (item?.name === 'phone' || item?.name === "mobile") {
                   return (
                     <TextInputNumericRectangle
                       jsonData={item}

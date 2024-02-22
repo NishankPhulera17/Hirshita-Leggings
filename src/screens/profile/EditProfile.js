@@ -117,7 +117,7 @@ const EditProfile = ({ navigation, route }) => {
 
     let submissionData = [...changedFormValues]
     let removedValues = submissionData.filter((item, index) => {
-      return item.name !== title
+      return item?.name !== title
     })
 
     if (title == "email") {
