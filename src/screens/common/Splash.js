@@ -15,20 +15,23 @@ import { setFcmToken } from '../../../redux/slices/fcmTokenSlice';
 import { setAppUsers,setAppUsersData } from '../../../redux/slices/appUserSlice';
 import { useGetAppUsersDataMutation } from '../../apiServices/appUsers/AppUsersApi';
 import Geolocation from '@react-native-community/geolocation';
+import InternetModal from '../../components/modals/InternetModal';
+
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch()
   const focused = useIsFocused()
   const [filteredArray, setFilteredArray] = useState()
   const [isAlreadyIntroduced, setIsAlreadyIntroduced] = useState(null);
   const [gotLoginData, setGotLoginData] = useState()
+  const [connected, setConnected] = useState(true)
   const otpLogin = useSelector(state => state.apptheme.otpLogin)
   const passwordLogin = useSelector(state => state.apptheme.passwordLogin)
   const manualApproval = useSelector(state => state.appusers.manualApproval)
   const autoApproval = useSelector(state => state.appusers.autoApproval)
   const registrationRequired = useSelector(state => state.appusers.registrationRequired)
-
+  const isConnected = useSelector(state => state.internet.isConnected);
   const gifUri = Image.resolveAssetSource(require('../../../assets/gif/btplGif.gif')).uri;
-  
+  console.log("internet connection status :",isConnected.isConnected)
 
   // generating functions and constants for API use cases---------------------
   const [
@@ -50,6 +53,14 @@ const Splash = ({ navigation }) => {
     },
   ] = useGetAppUsersDataMutation();
 
+  useEffect(()=>{
+    if(isConnected)
+    {
+      console.log(isConnected)
+      setConnected(isConnected.isConnected)
+    
+    }
+  },[isConnected])
   useEffect(()=>{
     getUsers();
     getAppTheme("hirshita-leggings")
@@ -337,7 +348,7 @@ const handleNavigation=(needsApproval,registrationRequired,userType,userId)=>{
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground resizeMode='cover' style={{ flex: 1, height: '100%', width: '100%', }} source={require('../../../assets/images/brandColaboration.png')}>
-
+      {!connected &&  <InternetModal />}
         {/* <Image  style={{ width: 200, height: 200,  }}  source={require('../../../assets/gif/ozonegif.gif')} /> */}
         {/* <FastImage
           style={{ width: 250, height: 250, marginTop:'auto',alignSelf:'center' }}
