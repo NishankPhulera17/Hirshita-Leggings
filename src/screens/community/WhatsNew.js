@@ -6,7 +6,6 @@ import * as Keychain from 'react-native-keychain';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import FastImage from 'react-native-fast-image';
 import DataNotFound from '../data not found/DataNotFound';
 

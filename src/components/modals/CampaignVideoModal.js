@@ -8,7 +8,6 @@ import PoppinsText from '../electrons/customFonts/PoppinsText';
 import { ScrollView } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { useGetAppCampaignMutation } from '../../apiServices/campaign/CampaignApi';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import Close from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 

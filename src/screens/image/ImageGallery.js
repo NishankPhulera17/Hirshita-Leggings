@@ -5,7 +5,6 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useGetAppGalleryMutation } from '../../apiServices/imageGallery/ImageGalleryApi';
 import * as Keychain from 'react-native-keychain';
 import moment from 'moment';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import Cancel from 'react-native-vector-icons/MaterialIcons'
 import Left from 'react-native-vector-icons/AntDesign'
 import Right from 'react-native-vector-icons/AntDesign'

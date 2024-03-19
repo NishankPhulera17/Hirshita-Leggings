@@ -5,7 +5,6 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import { useGetWarrantyByAppUserIdMutation } from '../../apiServices/workflow/warranty/ActivateWarrantyApi';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import FilterModal from '../../components/modals/FilterModal';

@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import TrackGiftProgessBar from '../organisms/TrackGiftProgessBar';
 import { useGetRedeemedGiftsStatusMutation } from '../../apiServices/gifts/RedeemGifts';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import Close from 'react-native-vector-icons/Ionicons';
 
 

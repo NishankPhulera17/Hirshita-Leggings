@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useSelector } from 'react-redux';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 const height = Dimensions.get('window').height
 

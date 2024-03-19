@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import DotHorizontalList from '../molecules/DotHorizontalList';
 import { useSelector } from 'react-redux';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 const Banner = (props) => {
   const [showImage, setShowImage] = useState(props.images[0]);

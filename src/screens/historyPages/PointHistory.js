@@ -9,7 +9,6 @@ import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import FilterModal from '../../components/modals/FilterModal';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useGetPointSharingDataMutation } from '../../apiServices/pointSharing/pointSharingApi';
 import { dispatchCommand } from 'react-native-reanimated';
 import InputDate from '../../components/atoms/input/InputDate';

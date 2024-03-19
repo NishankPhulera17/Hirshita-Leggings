@@ -18,7 +18,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as Keychain from 'react-native-keychain';
 import {useSelector} from 'react-redux';
 import { useProductCatalogueMutation } from '../../apiServices/productCatalogue/productCatalogueApi';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import Pdf from 'react-native-pdf';
 import FastImage from 'react-native-fast-image';
 

@@ -5,7 +5,6 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useSelector } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import { useGetWarrantyByAppUserIdMutation } from '../../apiServices/workflow/warranty/ActivateWarrantyApi';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import moment from 'moment';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import { Text } from 'react-native-svg';

@@ -10,7 +10,6 @@ import * as Keychain from 'react-native-keychain';
 import { useFetchAllQrScanedListMutation } from '../../apiServices/qrScan/AddQrApi';
 import { FlatList } from 'react-native';
 import moment from 'moment';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 
 // create a component

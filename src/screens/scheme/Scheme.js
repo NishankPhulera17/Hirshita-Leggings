@@ -15,7 +15,6 @@ import {useCheckActiveSchemeMutation} from '../../apiServices/scheme/GetSchemeAp
 import * as Keychain from 'react-native-keychain';
 import Logo from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 export default function Scheme({navigation}) {
     const [scheme, setScheme] = useState([])

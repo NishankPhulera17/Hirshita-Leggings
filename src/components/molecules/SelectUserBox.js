@@ -1,7 +1,6 @@
 import React,{useEffect, useState} from 'react';
 import {View, StyleSheet,TouchableOpacity,Image} from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { SvgUri } from 'react-native-svg';
 import { useIsFocused } from '@react-navigation/native';
 import Dashboard from '../../screens/dashboard/Dashboard';

@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import * as Keychain from "react-native-keychain";
 import { useFetchUserPointsMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
 import { useAllUserPointsEntryMutation } from "../../apiServices/workflow/rewards/GetPointsApi";
-import { BaseUrlImages } from "../../utils/BaseUrlImages";
 import moment from "moment";
 import BottomModal from "../../components/modals/BottomModal";
 import FastImage from "react-native-fast-image";

@@ -3,7 +3,6 @@ import {View, StyleSheet,TouchableOpacity,Image} from 'react-native';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import StatusBox from '../../components/atoms/StatusBox';
 import moment from 'moment';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 const ScannedDetails = ({navigation,route}) => {
     const status = "Success"
     

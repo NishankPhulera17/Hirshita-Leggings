@@ -10,7 +10,6 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useUpdateProfileMutation } from '../../apiServices/profile/profileApi';
 import * as Keychain from 'react-native-keychain';
 import MessageModal from '../../components/modals/MessageModal';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import ErrorModal from '../../components/modals/ErrorModal';
 import InputDateProfile from '../../components/atoms/input/InputDateProfile';
 import RectangularUnderlinedDropDown from '../../components/atoms/dropdown/RectangularUnderlinedDropDown';

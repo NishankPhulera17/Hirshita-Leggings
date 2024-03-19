@@ -15,7 +15,6 @@ import { useCheckActiveSchemeMutation } from "../../apiServices/scheme/GetScheme
 import * as Keychain from "react-native-keychain";
 import Logo from "react-native-vector-icons/AntDesign";
 import moment from "moment";
-import { BaseUrlImages } from "../../utils/BaseUrlImages";
 import { useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation } from "../../apiServices/gifts/GiftApi";
 
 export default function GiftCatalogue({ navigation }) {

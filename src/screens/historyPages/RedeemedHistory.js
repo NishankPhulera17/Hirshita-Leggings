@@ -7,7 +7,6 @@ import { useFetchGiftsRedemptionsOfUserMutation } from '../../apiServices/workfl
 import * as Keychain from 'react-native-keychain';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import moment from 'moment';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useIsFocused } from '@react-navigation/native';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';

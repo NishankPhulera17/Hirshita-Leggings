@@ -13,7 +13,6 @@ import DisplayOnlyTextInput from '../../components/atoms/DisplayOnlyTextInput';
 import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
 import * as Keychain from 'react-native-keychain';
 import { useGetFormMutation } from '../../apiServices/workflow/GetForms';
-import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useGetActiveMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
 import { useIsFocused } from '@react-navigation/native';
 import PlatinumModal from '../../components/platinum/PlatinumModal';
