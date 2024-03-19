@@ -1,3 +1,4 @@
+import { slug } from "../../utils/Slug";
 import { baseApi } from "../baseApi";
 
 export const AppThemeApi = baseApi.injectEndpoints({
@@ -9,7 +10,7 @@ export const AppThemeApi = baseApi.injectEndpoints({
                     url:`/api/admin/vendorTheme/${clientName}`,
                     method:'get',
                     headers:{"Content-Type": "application/json"},
-                    
+                    slug:slug
                    
                 }
             }
