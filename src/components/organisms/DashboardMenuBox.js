@@ -147,7 +147,7 @@ const DashboardMenuBox = (props) => {
             <MenuItems
               handlePress={handleMenuItemPress}
               key={index}
-              image={`${BaseUrl}/api/images/${item.icon}`}
+              image={item.icon}
               content={item.name}
             ></MenuItems>
           );

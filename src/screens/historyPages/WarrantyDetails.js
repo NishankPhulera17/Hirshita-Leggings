@@ -15,7 +15,7 @@ import FeedbackTextArea from '../../components/feedback/FeedbackTextArea';
 import ImageInput from '../../components/atoms/input/ImageInput';
 import ImageInputWithUpload from '../../components/atoms/input/ImageInputWithUpload';
 import ButtonRectangle from '../../components/atoms/buttons/ButtonRectangle';
-import { useUploadImagesMutation } from '../../apiServices/imageApi/imageApi';
+import { useUploadImagesMutation, useUploadSingleFileMutation } from '../../apiServices/imageApi/imageApi';
 import Icon from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Ionicons';
 import ErrorModal from '../../components/modals/ErrorModal';
@@ -61,7 +61,7 @@ const WarrantyDetails = ({ navigation, route }) => {
             isLoading: uploadImageIsLoading,
             isError: uploadImageIsError,
         },
-    ] = useUploadImagesMutation();
+    ] = useUploadSingleFileMutation();
 
     const [
         createWarrantyClaim,
@@ -268,7 +268,14 @@ const WarrantyDetails = ({ navigation, route }) => {
                 };
                 const uploadFile = new FormData();
                 uploadFile.append('images', imageDataTemp);
-                uploadImageFunc({ body: uploadFile });
+                const getToken = async () => {
+                    const credentials = await Keychain.getGenericPassword();
+                    const token = credentials.username;
+        
+                    uploadImageFunc({ body: uploadFile,token:token });
+                }
+        
+                getToken()
                 setModal(!modal);
 
             }

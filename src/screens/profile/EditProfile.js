@@ -5,7 +5,7 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import RectanglarUnderlinedTextInput from '../../components/atoms/input/RectanglarUnderlinedTextInput';
 import InputDate from '../../components/atoms/input/InputDate';
 import ImageInput from '../../components/atoms/input/ImageInput';
-import { useUploadImagesMutation } from '../../apiServices/imageApi/imageApi';
+import { useUploadImagesMutation, useUploadSingleFileMutation } from '../../apiServices/imageApi/imageApi';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useUpdateProfileMutation } from '../../apiServices/profile/profileApi';
 import * as Keychain from 'react-native-keychain';
@@ -55,7 +55,7 @@ const EditProfile = ({ navigation, route }) => {
       isLoading: uploadImageIsLoading,
       isError: uploadImageIsError,
     },
-  ] = useUploadImagesMutation();
+  ] = useUploadSingleFileMutation();
 
   const [updateProfileFunc, {
     data: updateProfileData,
@@ -203,7 +203,14 @@ const EditProfile = ({ navigation, route }) => {
       };
       const uploadFile = new FormData();
       uploadFile.append('images', imageData);
-      uploadImageFunc({ body: uploadFile });
+      const getToken = async () => {
+        const credentials = await Keychain.getGenericPassword();
+        const token = credentials.username;
+
+        uploadImageFunc({ body: uploadFile,token:token });
+    }
+
+    getToken()
     }
     else {
       console.log("else")

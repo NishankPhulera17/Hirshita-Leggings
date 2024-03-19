@@ -504,7 +504,7 @@ const BasicInfo = ({ navigation, route }) => {
     console.log("get user data", userData)
 
     console.log("ooooooo->>>>>>>>", { userName, userMobile, userTypeId, userType })
-    const params = { mobile: userMobile, name: userName, user_type_id: userTypeId, user_type: userType }
+    const params = { mobile: userMobile, name: userName, user_type_id: userTypeId, user_type: userType,type:"login" }
     sendOtpFunc(params)
   }
 

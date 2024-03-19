@@ -250,6 +250,7 @@ const OtpVerification = ({navigation,route}) => {
           name: name,
           user_type: user_type,
           user_type_id: user_type_id,
+          type:'redemption'
         };
         getOtpforVerificationFunc(params);
 
