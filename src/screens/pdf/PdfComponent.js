@@ -5,7 +5,7 @@ import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 const PdfComponent = ({route}) => {
     const pdf = route?.params?.pdf
-    const pdfLink = pdf == null ?  BaseUrlImages : BaseUrlImages+pdf
+    const pdfLink = pdf == null ?  BaseUrlImages : pdf
     const source = pdf == null ? { uri: BaseUrlImages, cache: true } : { uri: pdfLink, cache: true };
     // useEffect(()=>{
     //     return () =>BackHandler.removeEventListener()

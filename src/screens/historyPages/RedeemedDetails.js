@@ -234,7 +234,7 @@ const RedeemedDetails = ({ navigation, route }) => {
           >
             <Image
               style={{ height: 80, width: 80, resizeMode: "contain" }}
-              source={{ uri: BaseUrlImages + image }}
+              source={{ uri:  image }}
             ></Image>
             <PoppinsTextMedium
               style={{ fontSize: 16, fontWeight: "700", color: "#171717" }}

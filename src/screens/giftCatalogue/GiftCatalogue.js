@@ -120,7 +120,7 @@ export default function GiftCatalogue({ navigation }) {
         >
           <Image
             style={{ height: "100%", width: "100%", resizeMode: "contain" }}
-            source={{ uri: BaseUrlImages + image }}
+            source={{ uri:  image }}
           ></Image>
         </View>
         <View

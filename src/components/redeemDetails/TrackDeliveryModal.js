@@ -47,7 +47,7 @@ const TrackDeliveryModal = ({ isVisible, onClose, data, trackdata }) => {
                     </View>
 
                     <View style={{ alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
-                        <Image style={{ height: 70, width: 117, resizeMode: "contain", margin: 10, padding: 10, backgroundColor: 'white', }} source={{ uri: BaseUrlImages + data?.gift?.gift[0]?.images[0] }}></Image>
+                        <Image style={{ height: 70, width: 117, resizeMode: "contain", margin: 10, padding: 10, backgroundColor: 'white', }} source={{ uri:  data?.gift?.gift[0]?.images[0] }}></Image>
                         <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: '#474747', width: '100%' }} content={data.gift.gift[0].name}></PoppinsTextMedium>
                     </View>
 

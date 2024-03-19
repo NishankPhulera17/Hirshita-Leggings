@@ -139,7 +139,7 @@ const AddedUserScanList = ({ navigation, route }) => {
               {image !== null && (
                 <Image
                   style={{ height: 60, width: 60, resizeMode: "contain" }}
-                  source={{ uri: BaseUrlImages + image }}
+                  source={{ uri:  image }}
                 ></Image>
               )}
             </View>

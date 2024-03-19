@@ -275,7 +275,7 @@ const RedeemRewardHistory = ({navigation}) => {
         renderItem={({item,index}) => {
             console.log("Redeem",item)
             return(
-                <RedeemRewardDataBoxLong type="Uri" header={item.gift.gift[0].name} data={moment(item.created_at).format("DD MMM YYYY")} image={BaseUrlImages+item.gift.gift[0].images[0]}></RedeemRewardDataBoxLong>
+                <RedeemRewardDataBoxLong type="Uri" header={item.gift.gift[0].name} data={moment(item.created_at).format("DD MMM YYYY")} image={item.gift.gift[0].images[0]}></RedeemRewardDataBoxLong>
                 
                 )
         }}

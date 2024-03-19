@@ -1,1 +1,1 @@
-export const BaseUrl = 'https://api.genefied.in'
+export const BaseUrl = 'https://saas.genefied.in/'

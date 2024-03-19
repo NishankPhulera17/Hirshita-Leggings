@@ -14,7 +14,7 @@ const GenunityDetails = ({ navigation, route }) => {
 
     console.log("product data gdetails", productData);    
 
-    const uriImage = BaseUrlImages + productData.products?.[0]?.images?.[0];
+    const uriImage =  productData.products?.[0]?.images?.[0];
     // console.log("uriImage",uriImage)
     // const website = "";
 

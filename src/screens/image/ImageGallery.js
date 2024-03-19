@@ -92,7 +92,7 @@ setIndexImage(indexImage-1)
             <Left name = "caretleft" size={30} color={ternaryThemeColor} ></Left>
 
             </TouchableOpacity>
-          <Image style={{height:'96%',width:'96%',resizeMode:'contain'}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
+          <Image style={{height:'96%',width:'96%',resizeMode:'contain'}} source={{uri:images[indexImage]}}></Image>
           <TouchableOpacity style={{position:'absolute',right:4}} onPress={()=>{if(images.length-1>indexImage){
 setIndexImage(indexImage +1)
           }}}>
@@ -106,7 +106,7 @@ setIndexImage(indexImage +1)
         </View>
       </Modal>
        <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'100%',borderRadius:20}}>
-        <Image style={{height:"100%",width:"100%",borderRadius:20}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
+        <Image style={{height:"100%",width:"100%",borderRadius:20}} source={{uri:images[indexImage]}}></Image>
        
        </View>
         {/* <View style={{backgroundColor:'black',width:'100%',alignItems:'flex-start',height:'50%',justifyContent:"center"}}>

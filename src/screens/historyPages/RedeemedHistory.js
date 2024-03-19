@@ -460,7 +460,7 @@ const RedeemedHistory = ({ navigation }) => {
         navigation.navigate('RedeemedDetails', { data: data })
       }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 10, width: "100%", marginBottom: 10 }}>
         <View style={{ height: 70, width: 70, alignItems: "center", justifyContent: "center", borderRadius: 10, borderWidth: 1, borderColor: '#DDDDDD', right: 10 }}>
-          <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={{ uri: BaseUrlImages + image }}></Image>
+          <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={{ uri:  image }}></Image>
         </View>
         <View style={{ alignItems: "flex-start", justifyContent: "center", marginLeft: 0, width: 160 }}>
           <PoppinsTextMedium style={{ fontWeight: '600', fontSize: 16, color: 'black', textAlign: 'auto' }} content={description}></PoppinsTextMedium>

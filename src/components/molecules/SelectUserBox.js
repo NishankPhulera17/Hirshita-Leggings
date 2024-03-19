@@ -10,7 +10,7 @@ const SelectUserBox = (props) => {
     const [boxColor, setBoxColor] = useState('white')
     const focused = useIsFocused()
    
-    const image = BaseUrlImages+props.image
+    const image = props.image
     // const image = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/atom.svg'
     // console.log(image)
     const color = props.color

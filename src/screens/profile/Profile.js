@@ -308,7 +308,7 @@ const Profile = ({ navigation }) => {
               {fetchProfileData?.body?.profile_pic!==null ? (
                 <Image
                   style={{ height: 98, width: 98, resizeMode: 'contain', borderRadius: 49 }}
-                  source={{ uri: BaseUrlImages + fetchProfileData?.body?.profile_pic }}></Image>
+                  source={{ uri:  fetchProfileData?.body?.profile_pic }}></Image>
               ) : (
                 <Image
                   style={{ height: 60, width: 60, resizeMode: 'contain' }}
@@ -420,7 +420,7 @@ const Profile = ({ navigation }) => {
           {fetchProfileData ? (
             <Image
               style={{ height: 300, width: 300, resizeMode: 'contain', borderRadius: 200 }}
-              source={{ uri: BaseUrlImages + fetchProfileData.body?.profile_pic }}></Image>
+              source={{ uri:  fetchProfileData.body?.profile_pic }}></Image>
           ) : (
             <Image
               style={{ height: 200, width: 180, resizeMode: 'contain' }}

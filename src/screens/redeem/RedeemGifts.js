@@ -307,7 +307,7 @@ const RedeemGifts = ({navigation,route}) => {
             }}>
             <Image
               style={{height: 40, width: 40, resizeMode: 'contain'}}
-              source={{uri: BaseUrlImages + image}}></Image>
+              source={{uri:  image}}></Image>
           </View>
           <LinearGradient
             style={{

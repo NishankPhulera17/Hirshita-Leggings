@@ -350,7 +350,7 @@ const CartList = ({ navigation, route }) => {
             }}>
             <Image
               style={{ height: 46, width: 56, resizeMode: 'center' }}
-              source={{ uri: BaseUrlImages + image }}></Image>
+              source={{ uri:  image }}></Image>
           </View>
           <LinearGradient
             style={{

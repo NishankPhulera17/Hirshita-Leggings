@@ -263,7 +263,7 @@ const WhatsNew = ({ navigation }) => {
                                     <View style={{ borderRadius: 100, borderColor: 'black', height: 40, borderWidth: 1, width: 40, marginLeft: 10, marginRight: 20, padding: 2 }}>
                                         <Image
                                             style={{ height: '100%', width: '100%', resizeMode: 'contain' }}
-                                            source={{ uri: BaseUrlImages + item?.images[0] }}></Image>
+                                            source={{ uri:  item?.images[0] }}></Image>
                                     </View>
 
                                     <View style={{ flexDirection: 'column', width: '80%' }}>
