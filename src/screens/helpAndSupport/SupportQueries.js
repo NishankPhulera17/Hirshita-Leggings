@@ -127,7 +127,7 @@ const SupportQueries = ({ navigation }) => {
 
   const handleData = (dta) => {
     console.log("short desc", dta);
-    setShortDescText(dta.value)
+    setShortDescText(dta?.value)
 
   };
 
