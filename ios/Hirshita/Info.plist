@@ -11,13 +11,13 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleName</key>
 	<string>BTPL World</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -35,8 +35,11 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>&quot;BTPL World uses Firebase Analytics to better understand how users interact with the app, improve user experience, and optimize app performance. This includes collecting information such as device information, app usage, and interactions within the app. The data collected is used solely for analytics purposes and helps us make informed decisions to enhance our services. Your privacy is important to us, and all data collected is handled securely and in accordance with our privacy policy.&quot;
+</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Play music</string>
+	<string>The app requires media library usage to access photos of QR code, upload profile pictures.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The app requires camera access to scan qr codes for loyalty redemption</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
